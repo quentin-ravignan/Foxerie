@@ -1,5 +1,13 @@
 {
   "versements_mensuels": { "louise": null, "quentin": null },
-  "categories": ["Crédit maison", "Courses", "Énergie", "Maison", "Transport", "Santé", "Loisirs", "Autre"],
-  "depenses": []
+  "comptes": [
+    { "id": "bourso-louise",  "banque": "Boursorama",       "titulaire": "louise",  "solde": null, "date_solde": null },
+    { "id": "bourso-quentin", "banque": "Boursorama",       "titulaire": "quentin", "solde": null, "date_solde": null },
+    { "id": "bourso-foxerie", "banque": "Boursorama",       "titulaire": "foxerie", "solde": null, "date_solde": null },
+    { "id": "sg-louise",      "banque": "Société Générale", "titulaire": "louise",  "solde": null, "date_solde": null },
+    { "id": "sg-quentin",     "banque": "Société Générale", "titulaire": "quentin", "solde": null, "date_solde": null },
+    { "id": "sg-foxerie",     "banque": "Société Générale", "titulaire": "foxerie", "solde": null, "date_solde": null }
+  ],
+  "categories": ["Crédit maison", "Courses", "Énergie", "Maison", "Transport", "Santé", "Loisirs", "Salaire", "Autre"],
+  "operations": []
 }
