@@ -7,7 +7,7 @@
   --muted: #6e625b;
   --line: #e7e0da;
   --accent: #d9541e;
-  --accent-deep: #a83d12;
+  --accent-deep: #9c3f22;
   --accent-soft: #fbe5d9;
   --on-accent: #ffffff;
   --louise: #c2456e;
@@ -17,7 +17,7 @@
   --ensemble: #d9541e;
   --ensemble-soft: #fbe5d9;
   --pret: #7b6e66;
-  --good: #2f7a4f;
+  --good: #3d7a34;
   --bad: #b8321f;
   --sg: #e60028;
   --bourso: #d4007a;
@@ -270,3 +270,17 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .pie-leg small { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .pie-wrap-row { margin-bottom: 12px; }
 @media (max-width: 480px) { .pie { justify-content: center; } .pie-leg { min-width: 0; width: 100%; } }
+
+/* Bandeau photo de la maison */
+.house-hero { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.hh-img { min-height: 320px; background: url("images/maison.jpg") center 42% / cover no-repeat; position: relative; }
+.hh-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(270deg, var(--surface) 0, transparent 18%); }
+.hh-txt { padding: 24px; display: grid; gap: 10px; align-content: center; }
+.hh-txt .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.hh-txt h2 { font-size: clamp(26px, 4.5vw, 38px); line-height: 1.05; }
+.hh-txt .sub { margin: 0; color: var(--muted); }
+@media (max-width: 720px) {
+  .house-hero { grid-template-columns: 1fr; }
+  .hh-img { min-height: 260px; background-position: center 40%; }
+  .hh-img::after { background: linear-gradient(0deg, var(--surface) 0, transparent 25%); }
+}

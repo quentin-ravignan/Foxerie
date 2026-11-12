@@ -390,6 +390,7 @@ function renderMaison(m) {
   const etapes = m.etapes || [];
   const nbFait = etapes.filter(e => e.statut === "fait").length;
 
+  $("#maison-stats").innerHTML = [`Achat ${fmt(prix)}`, `Prêt ${fmt(pret.montant)}`, pret.mensualite_actuelle ? `${fmt(pret.mensualite_actuelle)} / mois aujourd'hui` : null].filter(Boolean).map(s => `<span>${esc(s)}</span>`).join("");
   $("#maison-sub").textContent = `Plan de financement de l'achat · ${nbFait} étape${nbFait > 1 ? "s" : ""} sur ${etapes.length} franchie${nbFait > 1 ? "s" : ""}.`;
 
   $("#maison-body").innerHTML = `
