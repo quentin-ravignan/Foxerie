@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Foxerie</title>
+<meta name="theme-color" content="#2f6b5e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30"><path d="M4 15 16 5l12 10v12a1 1 0 0 1-1 1h-7v-8h-8v8H5a1 1 0 0 1-1-1z" fill="currentColor"/></svg>
+      </span>
+      <div>
+        <h1>Foxerie</h1>
+        <p class="addr" id="addr">175 avenue · 93170 Bagnolet</p>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#taches" data-tab="taches">Tâches</a>
+      <a href="#budget" data-tab="budget">Budget</a>
+      <a href="#maison" data-tab="maison">Maison</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- TÂCHES -->
+  <section id="v-taches" class="view" aria-labelledby="h-taches">
+    <div class="view-head">
+      <h2 id="h-taches">Le quotidien</h2>
+      <p class="sub">Chacun sa colonne, et une pour les deux. Les tâches ajoutées ou cochées sont gardées sur ce téléphone.</p>
+    </div>
+    <div class="cols" id="todo-cols"></div>
+  </section>
+
+  <!-- BUDGET -->
+  <section id="v-budget" class="view" aria-labelledby="h-budget" hidden>
+    <div class="view-head row">
+      <div>
+        <h2 id="h-budget">Budget commun</h2>
+        <p class="sub">Chacun verse selon ses moyens sur le compte commun.</p>
+      </div>
+      <div class="month" id="month-nav">
+        <button type="button" id="m-prev" aria-label="Mois précédent">‹</button>
+        <span id="m-label">—</span>
+        <button type="button" id="m-next" aria-label="Mois suivant">›</button>
+      </div>
+    </div>
+    <div id="budget-body"></div>
+  </section>
+
+  <!-- MAISON -->
+  <section id="v-maison" class="view" aria-labelledby="h-maison" hidden>
+    <div class="view-head">
+      <h2 id="h-maison">Montage financier</h2>
+      <p class="sub" id="maison-sub">Plan de financement de l'achat.</p>
+    </div>
+    <div id="maison-body"></div>
+  </section>
+
+</main>
+<footer class="wrap foot">Foxerie · données dans <code>data/</code></footer>
+<script src="app.js"></script>
+</body>
+</html>

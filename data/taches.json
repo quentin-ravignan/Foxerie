@@ -1,0 +1,7 @@
+{
+  "taches": [
+    { "id": "t1", "texte": "Résilier l'ancienne assurance habitation", "qui": "quentin" },
+    { "id": "t2", "texte": "Changer d'adresse (impôts, banque, CAF)", "qui": "louise" },
+    { "id": "t3", "texte": "Ouvrir les contrats électricité et eau", "qui": "ensemble" }
+  ]
+}

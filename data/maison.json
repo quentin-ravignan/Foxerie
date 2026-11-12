@@ -1,0 +1,33 @@
+{
+  "adresse": "175 avenue, 93170 Bagnolet",
+  "ressources": [
+    { "libelle": "Apport Louise", "montant": 139384.14, "qui": "louise" },
+    { "libelle": "Apport Quentin", "montant": 46633.90, "qui": "quentin" },
+    { "libelle": "Prêt SG (Quentin)", "montant": 420000, "qui": "pret" }
+  ],
+  "depenses": [
+    { "libelle": "Acquisition", "montant": 500000 },
+    { "libelle": "Agence", "montant": 20000 },
+    { "libelle": "Frais de notaire", "montant": 36400 },
+    { "libelle": "Frais de prêt", "montant": 6818 },
+    { "libelle": "Frais de courtier", "montant": 2800 },
+    { "libelle": "Travaux", "montant": 40000 }
+  ],
+  "pret": {
+    "banque": "Société Générale",
+    "emprunteur": "Quentin",
+    "montant": 420000,
+    "taux": null,
+    "duree_annees": null,
+    "assurance_mensuelle": null
+  },
+  "etapes": [
+    { "titre": "Offre d'achat acceptée", "statut": "fait", "date": null },
+    { "titre": "Compromis de vente signé", "statut": "fait", "date": null },
+    { "titre": "Offre de prêt SG reçue", "statut": "fait", "date": null },
+    { "titre": "Acte authentique signé", "statut": "fait", "date": null },
+    { "titre": "Remise des clés", "statut": "a_faire", "date": null },
+    { "titre": "Travaux", "statut": "a_faire", "date": null }
+  ],
+  "travaux": []
+}
