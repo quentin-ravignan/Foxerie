@@ -1,21 +1,26 @@
 /* Mise en page : en-tête collant avec onglets, une vue à la fois, cartes seulement là où un bloc se détache. */
+/* Renard : orange du pelage, brun-noir des pattes, blanc du poitrail, vert de la forêt pour les bons chiffres. */
 :root {
-  --bg: #f2f4f0;
+  --bg: #f5f3f1;
   --surface: #ffffff;
-  --fg: #1c2321;
-  --muted: #5e6a65;
-  --line: #dde2db;
-  --accent: #2f6b5e;
-  --accent-soft: #e0ede8;
-  --louise: #b54d71;
-  --louise-soft: #f6e3ea;
-  --quentin: #3a66a6;
-  --quentin-soft: #e2eaf5;
-  --ensemble: #87681c;
-  --ensemble-soft: #f2ead5;
-  --pret: #6b7a74;
-  --good: #2b7a4b;
-  --bad: #b0402e;
+  --fg: #251a15;
+  --muted: #6e625b;
+  --line: #e7e0da;
+  --accent: #d9541e;
+  --accent-deep: #a83d12;
+  --accent-soft: #fbe5d9;
+  --on-accent: #ffffff;
+  --louise: #c2456e;
+  --louise-soft: #f8e1e9;
+  --quentin: #2e5c8a;
+  --quentin-soft: #e0e9f3;
+  --ensemble: #d9541e;
+  --ensemble-soft: #fbe5d9;
+  --pret: #7b6e66;
+  --good: #2f7a4f;
+  --bad: #b8321f;
+  --sg: #e60028;
+  --bourso: #d4007a;
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   --r: 14px;
@@ -23,11 +28,11 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131816; --surface: #1b221f; --fg: #e6ebe8; --muted: #98a59f; --line: #2b3430;
-    --accent: #72b8a4; --accent-soft: #1e302a;
-    --louise: #e58aaa; --louise-soft: #3a2330; --quentin: #88aee6; --quentin-soft: #1e2a3b;
-    --ensemble: #d8b45f; --ensemble-soft: #322a18; --pret: #8d9a95;
-    --good: #6cc28f; --bad: #ec8a78;
+    --bg: #17120f; --surface: #211a16; --fg: #f1e9e3; --muted: #a8998f; --line: #362b25;
+    --accent: #f07a3e; --accent-deep: #c4561f; --accent-soft: #3a2316; --on-accent: #1a110c;
+    --louise: #ec8fb0; --louise-soft: #3b2230; --quentin: #8fb5e3; --quentin-soft: #1d2a3a;
+    --ensemble: #f07a3e; --ensemble-soft: #3a2316; --pret: #9b8d84;
+    --good: #72c793; --bad: #f08a76; --sg: #ff3b55; --bourso: #ff4fae;
     color-scheme: dark;
   }
 }
@@ -55,11 +60,49 @@ code { font-size: .9em; }
 
 /* En-tête */
 .top {
-  position: sticky; top: 0; z-index: 5;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: linear-gradient(100deg, var(--accent-deep), var(--accent));
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(80, 30, 5, .18);
 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--accent-deep); }
+.top .logo { color: #fff; }
+.top .addr { color: rgba(255,255,255,.82); }
+.top .tabs { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.25); }
+.top .tabs a { color: rgba(255,255,255,.9); }
+.top .tabs a:hover { color: #fff; }
+.top .tabs a[aria-current="page"] { background: #fff; color: var(--accent-deep); }
+
+/* Bandeau photo */
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.hero-txt { padding: 22px 24px; display: grid; gap: 10px; align-content: center; }
+.hero-txt .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.hero-txt h2 { font-size: clamp(26px, 4.5vw, 38px); line-height: 1.05; }
+.hero-txt p { margin: 0; color: var(--muted); max-width: 46ch; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.hero-stats span { font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); }
+.hero-img { min-height: 220px; background: var(--accent-soft) center 35% / cover no-repeat; position: relative; }
+.hero-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--surface) 0, transparent 22%); }
+.hero-img .fox-big { position: absolute; inset: 0; display: grid; place-items: center; color: var(--accent); opacity: .9; }
+@media (max-width: 720px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-img { order: -1; min-height: 200px; }
+  .hero-img::after { background: linear-gradient(0deg, var(--surface) 0, transparent 30%); }
+}
+@media (prefers-color-scheme: dark) { .top .tabs a[aria-current="page"] { color: #a83d12; } }
+
+/* Avatars */
+.av { width: 34px; height: 34px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #fff; background: var(--c, var(--accent)) center / cover no-repeat; border: 2px solid var(--surface); box-shadow: 0 0 0 2px var(--c, var(--accent)); }
+.col-head .who { display: flex; align-items: center; gap: 10px; }
+.av-duo { display: flex; }
+.av-duo .av + .av { margin-left: -10px; }
+
+/* Pastilles banques (couleurs seulement, pas les logos officiels) */
+.bank { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.bank::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--b); }
+.bank-sg { --b: linear-gradient(180deg, var(--sg) 50%, #111 50%); }
+.bank-bourso { --b: var(--bourso); }
+.bank::before { background: var(--b); }
 .top-in { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding-block: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; }
 .logo { color: var(--accent); display: grid; place-items: center; }

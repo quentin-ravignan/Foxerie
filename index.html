@@ -4,18 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Foxerie</title>
-<meta name="theme-color" content="#2f6b5e">
+<meta name="theme-color" content="#a83d12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M6 4 25 19 14 30Z M58 4 39 19 50 30Z M12 20Q32 12 52 20L56 33 32 58 8 33Z' fill='%23d9541e'/%3E%3Cpath d='M8 33 24 37 32 58Z M56 33 40 37 32 58Z' fill='%23fff'/%3E%3Ccircle cx='23' cy='30' r='3' fill='%232a1a12'/%3E%3Ccircle cx='41' cy='30' r='3' fill='%232a1a12'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="fox" viewBox="0 0 64 64">
+    <path d="M6 4 L25 19 L14 30 Z" fill="currentColor"/>
+    <path d="M58 4 L39 19 L50 30 Z" fill="currentColor"/>
+    <path d="M10 11 L20 19 L14 25 Z" fill="#2a1a12" opacity=".55"/>
+    <path d="M54 11 L44 19 L50 25 Z" fill="#2a1a12" opacity=".55"/>
+    <path d="M12 20 Q32 12 52 20 L56 33 L32 58 L8 33 Z" fill="currentColor"/>
+    <path d="M8 33 L24 37 L32 58 Z" fill="#fff"/>
+    <path d="M56 33 L40 37 L32 58 Z" fill="#fff"/>
+    <circle cx="23" cy="30" r="2.6" fill="#2a1a12"/>
+    <circle cx="41" cy="30" r="2.6" fill="#2a1a12"/>
+    <path d="M28.5 53 L35.5 53 L32 58 Z" fill="#2a1a12"/>
+  </symbol>
+</svg>
 <header class="top">
   <div class="wrap top-in">
     <div class="brand">
       <span class="logo" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="30" height="30"><path d="M4 15 16 5l12 10v12a1 1 0 0 1-1 1h-7v-8h-8v8H5a1 1 0 0 1-1-1z" fill="currentColor"/></svg>
+        <svg viewBox="0 0 64 64" width="40" height="40"><use href="#fox"/></svg>
       </span>
       <div>
         <h1>Foxerie</h1>
@@ -34,6 +49,15 @@
 
   <!-- TÂCHES -->
   <section id="v-taches" class="view" aria-labelledby="h-taches">
+    <div class="hero" id="hero">
+      <div class="hero-txt">
+        <span class="eyebrow">175 avenue · Bagnolet</span>
+        <h2>Bienvenue à la Foxerie</h2>
+        <p>La maison de Louise et Quentin : ce qu'il reste à faire, le budget commun et où en est le chantier.</p>
+        <div class="hero-stats" id="hero-stats"></div>
+      </div>
+      <div class="hero-img" id="hero-img"><span class="fox-big"><svg viewBox="0 0 64 64" width="120" height="120"><use href="#fox"/></svg></span></div>
+    </div>
     <div class="view-head">
       <h2 id="h-taches">Le quotidien</h2>
       <p class="sub">Chacun sa colonne, et une pour les deux. Les tâches ajoutées ou cochées sont gardées sur ce téléphone.</p>
@@ -70,6 +94,6 @@
 
 </main>
 <footer class="wrap foot">Foxerie · données dans <code>data/</code></footer>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>

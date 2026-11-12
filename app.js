@@ -33,6 +33,35 @@ function route() {
 }
 window.addEventListener("hashchange", route);
 
+/* ---------- Photo et avatars ---------- */
+/* Photo de Louise et Quentin : images/foxerie.jpg. Les avatars sont des recadrages de la même photo. */
+const PHOTO = { src: "images/foxerie.jpg", cadre: "center 30%", quentin: "8% 18%", louise: "70% 16%", zoom: "520%" };
+const AV_COLORS = { louise: "var(--louise)", quentin: "var(--quentin)" };
+const avatar = k => `<span class="av av-${k}" style="--c:${AV_COLORS[k]}">${k === "louise" ? "L" : "Q"}</span>`;
+function loadPhoto() {
+  const img = new Image();
+  img.onload = () => {
+    const h = $("#hero-img");
+    h.style.backgroundImage = `url("${PHOTO.src}")`; h.style.backgroundPosition = PHOTO.cadre;
+    h.querySelector(".fox-big").hidden = true;
+    document.querySelectorAll(".av").forEach(a => {
+      const k = a.classList.contains("av-louise") ? "louise" : "quentin";
+      a.style.backgroundImage = `url("${PHOTO.src}")`; a.style.backgroundSize = PHOTO.zoom; a.style.backgroundPosition = PHOTO[k];
+      a.textContent = "";
+    });
+  };
+  img.src = PHOTO.src;
+}
+function heroStats(fin, m) {
+  const open = allTodos().filter(t => !t.done).length;
+  const items = [`${open} tâche${open > 1 ? "s" : ""} en cours`];
+  const fox = (fin && fin.comptes || []).filter(c => c.titulaire === "foxerie" && c.solde != null);
+  if (fox.length) items.push(`Comptes Foxerie : ${fmt(sum(fox, c => c.solde))}`);
+  const e = (m && m.etapes || []).find(x => x.statut === "en_cours");
+  if (e) items.push(e.titre + " en cours");
+  $("#hero-stats").innerHTML = items.map(s => `<span>${esc(s)}</span>`).join("");
+}
+
 /* ---------- Tâches ---------- */
 const PEOPLE = [
   { k: "louise", n: "Louise", ph: "Ajouter pour Louise…" },
@@ -40,7 +69,7 @@ const PEOPLE = [
   { k: "ensemble", n: "À deux", ph: "Ajouter pour vous deux…" }
 ];
 const TKEY = "foxerie.taches.v1";
-let baseTodos = [];
+let baseTodos = [], maisonData = null;
 let local = store.get(TKEY, { ajouts: [], faits: {}, supprimes: {} });
 
 function allTodos() {
@@ -48,12 +77,12 @@ function allTodos() {
     .filter(t => !local.supprimes[t.id])
     .map(t => ({ ...t, done: !!local.faits[t.id] }));
 }
-function saveLocal() { store.set(TKEY, local); renderTodos(); }
+function saveLocal() { store.set(TKEY, local); renderTodos(); heroStats(fin, maisonData); }
 
 function buildTodoCols() {
   $("#todo-cols").innerHTML = PEOPLE.map(p => `
     <div class="col col-${p.k}">
-      <div class="col-head"><h3>${p.n}</h3><span class="count" id="cnt-${p.k}">0</span></div>
+      <div class="col-head"><div class="who">${p.k === "ensemble" ? `<span class="av-duo">${avatar("louise")}${avatar("quentin")}</span>` : avatar(p.k)}<h3>${p.n}</h3></div><span class="count" id="cnt-${p.k}">0</span></div>
       <form class="add" data-who="${p.k}" autocomplete="off">
         <input id="add-${p.k}" name="t" placeholder="${p.ph}" aria-label="${p.ph}" maxlength="200">
         <button type="submit" aria-label="Ajouter">+</button>
@@ -147,6 +176,7 @@ function setupBudget(data) {
   renderBudget();
 }
 
+const bankBadge = (b, long) => `<span class="bank bank-${/Soci/.test(b) ? "sg" : "bourso"}">${esc(long ? b : (BANK_SHORT[b] || b || "?"))}</span>`;
 const compte = id => fin.comptes.find(c => c.id === id) || {};
 const isDepense = o => o.montant < 0 && !o.type;
 const isRevenu = o => o.montant > 0 && !o.type;
@@ -166,7 +196,7 @@ function soldesCard() {
   return `<div class="card">
     <h3>Soldes des 6 comptes</h3>
     <div class="scroll"><table class="tx">
-      <thead><tr><th>Titulaire</th>${banks.map(b => `<th class="r">${esc(b)}</th>`).join("")}<th class="r">Total</th></tr></thead>
+      <thead><tr><th>Titulaire</th>${banks.map(b => `<th class="r">${bankBadge(b, true)}</th>`).join("")}<th class="r">Total</th></tr></thead>
       <tbody>${rows}</tbody>
     </table></div>
     <p class="note">Solde à la date du dernier relevé (jour/mois sous le montant).${missing.length ? ` Relevés manquants : ${missing.join(", ")}.` : ""}</p>
@@ -294,7 +324,7 @@ function renderBudget() {
           <tbody>${shown.map(o => `
             <tr class="${o.type === "interne" ? "muted" : ""}"><td class="num">${new Date(o.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })}</td>
             <td>${esc(o.libelle)}</td>
-            <td><span class="chip">${esc(BANK_SHORT[compte(o.compte).banque] || "?")}</span></td>
+            <td>${bankBadge(compte(o.compte).banque)}</td>
             <td><span class="chip">${esc(typeChip(o))}</span></td>
             <td class="r ${o.montant > 0 ? "pos" : ""}">${o.montant > 0 ? "+" : "−"}${fmt(Math.abs(o.montant), true)}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">Aucune opération ${per}.</td></tr>`}
           </tbody>
@@ -451,9 +481,12 @@ function renderMaison(m) {
   buildTodoCols();
   wireTodos();
   renderTodos();
+  loadPhoto();
   const [t, f, m] = await Promise.all([load("data/taches.json"), load("data/finances.json"), load("data/maison.json")]);
   baseTodos = (t && t.taches) || [];
+  maisonData = m;
   renderTodos();
   setupBudget(f);
   renderMaison(m);
+  heroStats(fin, m);
 })();
