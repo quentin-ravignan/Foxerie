@@ -335,6 +335,25 @@ function renderBudget() {
 }
 
 /* ---------- Maison ---------- */
+const PIE_C = { louise: "var(--louise)", quentin: "var(--quentin)", pret: "var(--pret)", foxerie: "var(--accent)" };
+/* Camembert (anneau) en SVG : chaque part est un arc de cercle de circonférence 100. */
+function pie(items, centre, small) {
+  items = items.filter(x => x.v > 0);
+  const tot = sum(items, x => x.v) || 1;
+  let acc = 0;
+  const arcs = items.map(x => {
+    const p = x.v / tot * 100, off = 25 - acc; acc += p;
+    return `<circle r="15.915" cx="21" cy="21" fill="none" stroke="${x.c}" stroke-width="7" stroke-dasharray="${Math.max(0, p - 0.4).toFixed(3)} ${(100 - Math.max(0, p - 0.4)).toFixed(3)}" stroke-dashoffset="${off.toFixed(3)}"><title>${esc(x.l)} : ${fmt(x.v)} (${pct.format(x.v / tot)})</title></circle>`;
+  }).join("");
+  return `<div class="pie${small ? " small" : ""}">
+    <svg viewBox="0 0 42 42" role="img" aria-label="${esc(centre)} : ${items.map(x => esc(x.l) + " " + pct.format(x.v / tot)).join(", ")}">
+      <circle r="15.915" cx="21" cy="21" fill="none" stroke="var(--line)" stroke-width="7"/>${arcs}
+      <text x="21" y="20" text-anchor="middle" class="pie-l">${esc(centre)}</text>
+      <text x="21" y="25" text-anchor="middle" class="pie-v">${fmt(tot).replace(/\s?€/, "")} €</text>
+    </svg>
+    <ul class="pie-leg">${items.map(x => `<li><i style="background:${x.c}"></i><span>${esc(x.l)}</span><b class="num">${fmt(x.v)}</b><small>${pct.format(x.v / tot)}</small></li>`).join("")}</ul>
+  </div>`;
+}
 const STATUT = { fait: "Fait", en_cours: "En cours", a_faire: "À venir" };
 
 function renderMaison(m) {
@@ -380,29 +399,16 @@ function renderMaison(m) {
       <div class="card kpi"><div class="label">Prêt ${esc(pret.banque || "")}</div><div class="v">${fmt(pret.montant)}</div><div class="d">${pct.format((pret.montant || 0) / totR)} du financement · ${pct.format((pret.montant || 0) / (prix || 1))} du prix</div></div>
     </div>
 
-    <div class="card">
-      <h3>Ressources et emplois</h3>
-      <div class="stack">
-        <div>
-          <div class="row-lab"><span class="label">Ressources</span><b class="num">${fmt(totR)}</b></div>
-          <div class="bigbar">${R.map(r => `<span class="${cls[r.qui] || "who-p"}" style="width:${(r.montant / totR) * 100}%" title="${esc(r.libelle)} : ${fmt(r.montant)}">${r.montant / totR > .1 ? esc(r.libelle.replace(/^Apport /, "")) : ""}</span>`).join("")}</div>
-        </div>
-        <div>
-          <div class="row-lab"><span class="label">Emplois</span><b class="num">${fmt(totD)}</b></div>
-          <div class="bigbar">${D.map((d, i) => `<span class="${/travaux/i.test(d.libelle) ? "e5" : "e" + Math.min(i, 4)}" style="width:${(d.montant / totD) * 100}%" title="${esc(d.libelle)} : ${fmt(d.montant)}">${d.montant / totD > .1 ? esc(d.libelle) : ""}</span>`).join("")}</div>
-        </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>D'où vient l'argent</h3>
+        ${pie(R.map(r => ({ l: r.libelle, v: r.montant, c: PIE_C[r.qui] || "var(--pret)" })), "Ressources")}
       </div>
-      <div class="grid2" style="margin-top:16px">
-        <div class="scroll"><table class="tx">
-          <thead><tr><th>Ressource</th><th class="r">Montant</th><th class="r">Part</th></tr></thead>
-          <tbody>${R.map(r => `<tr><td><i class="${cls[r.qui] || "who-p"}" style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px"></i>${esc(r.libelle)}</td><td class="r">${fmt(r.montant, true)}</td><td class="r">${pct.format(r.montant / totR)}</td></tr>`).join("")}</tbody>
-        </table></div>
-        <div class="scroll"><table class="tx">
-          <thead><tr><th>Emploi</th><th class="r">Montant</th><th class="r">Part</th></tr></thead>
-          <tbody>${D.map(d => `<tr><td>${esc(d.libelle)}</td><td class="r">${fmt(d.montant)}</td><td class="r">${pct.format(d.montant / totD)}</td></tr>`).join("")}</tbody>
-        </table></div>
+      <div class="card">
+        <h3>Où va l'argent</h3>
+        ${pie(D.map((d, i) => ({ l: d.libelle, v: d.montant, c: /travaux/i.test(d.libelle) ? "var(--p6)" : `var(--p${i + 1})` })), "Emplois")}
+        <p class="note">Frais de notaire : ${pct.format(notaire / (prix || 1))} du prix d'achat. ${Math.abs(ecart) >= 1 ? `Écart ressources − emplois : ${fmt(ecart, true)}.` : "Ressources et emplois sont équilibrés."}</p>
       </div>
-      <p class="note">Frais de notaire : ${pct.format(notaire / (prix || 1))} du prix d'achat. ${Math.abs(ecart) >= 1 ? `Écart ressources − emplois : ${fmt(ecart, true)}.` : "Ressources et emplois sont équilibrés."}</p>
     </div>
 
     <div class="grid2">
@@ -419,9 +425,7 @@ function renderMaison(m) {
       <div class="stack">
         <div class="card">
           <h3>Apports : prévu et payé</h3>
-          <div class="split" role="img" aria-label="Répartition des apports">
-            ${apports.map(a => `<span class="${cls[a.qui]}" style="width:${(a.montant / apport) * 100}%"></span>`).join("")}
-          </div>
+          ${pie(Object.entries(paye).map(([k, v]) => ({ l: "Payé par " + (QUI_LAB[k] || k), v, c: PIE_C[k] })), "Payé", true)}
           ${suivi.length ? `<table class="tx">
             <thead><tr><th></th><th class="r">Apport prévu</th><th class="r">Payé</th><th class="r">Écart</th></tr></thead>
             <tbody>${apports.map(a => { const p = paye[a.qui] || 0, e = p - a.montant; return `<tr><td><i class="dotw w-${a.qui}"></i>${esc(a.libelle.replace(/^Apport /, ""))}</td><td class="r">${fmt(a.montant)}</td><td class="r">${fmt(p)}</td><td class="r ${e > 0 ? "neg" : "pos"}">${e > 0 ? "+" : "−"}${fmt(Math.abs(e))}</td></tr>`; }).join("")}
@@ -463,7 +467,7 @@ function renderMaison(m) {
     </div>
     ${suivi.length ? `<div class="card">
       <h3>Suivi des dépenses de la maison</h3>
-      <div class="chips-row">${Object.entries(parType).map(([t, v]) => `<span class="chip">${esc(TYPE_LAB[t] || t)} · <b>${fmt(v)}</b></span>`).join("")}</div>
+      <div class="pie-wrap-row">${pie(Object.entries(parType).map(([t, v], i) => ({ l: TYPE_LAB[t] || t, v, c: `var(--p${[1, 6, 3, 4][i] || 5})` })), "Total")}</div>
       <div class="scroll"><table class="tx">
         <thead><tr><th>Date</th><th>Dépense</th><th>Type</th><th>Payé par</th><th class="r">Montant</th></tr></thead>
         <tbody>${suivi.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "")).map(s => `

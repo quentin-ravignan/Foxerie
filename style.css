@@ -253,3 +253,20 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Camemberts */
+:root { --p1: #a83d12; --p2: #e07a43; --p3: #f2b48c; --p4: #2e5c8a; --p5: #8fb0d4; --p6: #3f7d57; }
+@media (prefers-color-scheme: dark) { :root { --p1: #f07a3e; --p2: #c4561f; --p3: #f4b48e; --p4: #8fb5e3; --p5: #4f78a6; --p6: #72c793; } }
+.pie { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.pie svg { width: 190px; height: 190px; flex: none; max-width: 100%; }
+.pie.small svg { width: 140px; height: 140px; }
+.pie circle { transition: stroke-width .15s; }
+.pie circle:hover { stroke-width: 8.5; }
+.pie-l { font-size: 3px; fill: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-family: var(--body); }
+.pie-v { font-size: 4.6px; font-weight: 700; fill: var(--fg); font-family: var(--display); }
+.pie-leg { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; flex: 1; min-width: 200px; font-size: 14px; }
+.pie-leg li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 48px; gap: 8px; align-items: center; }
+.pie-leg i { width: 12px; height: 12px; border-radius: 3px; }
+.pie-leg small { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.pie-wrap-row { margin-bottom: 12px; }
+@media (max-width: 480px) { .pie { justify-content: center; } .pie-leg { min-width: 0; width: 100%; } }
