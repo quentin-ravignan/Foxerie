@@ -1,33 +1,161 @@
 {
   "adresse": "175 avenue, 93170 Bagnolet",
   "ressources": [
-    { "libelle": "Apport Louise", "montant": 139384.14, "qui": "louise" },
-    { "libelle": "Apport Quentin", "montant": 46633.90, "qui": "quentin" },
-    { "libelle": "Prêt SG (Quentin)", "montant": 420000, "qui": "pret" }
+    {
+      "libelle": "Apport Louise",
+      "montant": 139384.14,
+      "qui": "louise"
+    },
+    {
+      "libelle": "Apport Quentin",
+      "montant": 46633.9,
+      "qui": "quentin"
+    },
+    {
+      "libelle": "Prêt SG (Quentin)",
+      "montant": 420000,
+      "qui": "pret"
+    }
   ],
   "depenses": [
-    { "libelle": "Acquisition", "montant": 500000 },
-    { "libelle": "Agence", "montant": 20000 },
-    { "libelle": "Frais de notaire", "montant": 36400 },
-    { "libelle": "Frais de prêt", "montant": 6818 },
-    { "libelle": "Frais de courtier", "montant": 2800 },
-    { "libelle": "Travaux", "montant": 40000 }
+    {
+      "libelle": "Acquisition",
+      "montant": 500000
+    },
+    {
+      "libelle": "Agence",
+      "montant": 20000
+    },
+    {
+      "libelle": "Frais de notaire",
+      "montant": 36400
+    },
+    {
+      "libelle": "Frais de prêt",
+      "montant": 6818
+    },
+    {
+      "libelle": "Frais de courtier",
+      "montant": 2800
+    },
+    {
+      "libelle": "Travaux",
+      "montant": 40000
+    }
   ],
   "pret": {
     "banque": "Société Générale",
     "emprunteur": "Quentin",
     "montant": 420000,
     "taux": null,
-    "duree_annees": null,
-    "assurance_mensuelle": null
+    "duree_annees": 25,
+    "assurance_mensuelle": null,
+    "fin": "2051-09-07",
+    "compte": "sg-foxerie",
+    "echeances_observees": [
+      {
+        "date": "2026-09-10",
+        "montant": 405.04
+      },
+      {
+        "date": "2026-10-07",
+        "montant": 1120.0
+      }
+    ]
   },
   "etapes": [
-    { "titre": "Offre d'achat acceptée", "statut": "fait", "date": null },
-    { "titre": "Compromis de vente signé", "statut": "fait", "date": null },
-    { "titre": "Offre de prêt SG reçue", "statut": "fait", "date": null },
-    { "titre": "Acte authentique signé", "statut": "fait", "date": null },
-    { "titre": "Remise des clés", "statut": "a_faire", "date": null },
-    { "titre": "Travaux", "statut": "a_faire", "date": null }
+    {
+      "titre": "Offre d'achat acceptée",
+      "statut": "fait",
+      "date": null
+    },
+    {
+      "titre": "Compromis signé",
+      "statut": "fait",
+      "date": "2026-05-15",
+      "note": "Dépôt de garantie de 15 000 € versé au notaire"
+    },
+    {
+      "titre": "Courtier FPI payé",
+      "statut": "fait",
+      "date": "2026-08-20",
+      "note": "2 800 €"
+    },
+    {
+      "titre": "Offre de prêt SG",
+      "statut": "fait",
+      "date": "2026-08-28",
+      "note": "Frais de dossier 2 000 € et caution Crédit Logement 4 818 €"
+    },
+    {
+      "titre": "Acte authentique signé",
+      "statut": "fait",
+      "date": null,
+      "note": "Début septembre 2026 : première échéance du prêt le 10/09"
+    },
+    {
+      "titre": "Travaux",
+      "statut": "en_cours",
+      "date": "2026-09-17",
+      "note": "Premier paiement à EC Rénov"
+    },
+    {
+      "titre": "Emménagement",
+      "statut": "fait",
+      "date": null,
+      "note": "Dernier loyer de l'ancien logement en août, remboursement du déménagement en octobre"
+    }
   ],
-  "travaux": []
+  "travaux": [
+    {
+      "date": "2026-09-17",
+      "libelle": "EC Rénov (chantier)",
+      "montant": 4000.0
+    },
+    {
+      "date": "2026-09-21",
+      "libelle": "EC Rénov (chantier)",
+      "montant": 3000.0
+    },
+    {
+      "date": "2026-09-24",
+      "libelle": "Maisonsdumonde",
+      "montant": 299.0
+    },
+    {
+      "date": "2026-09-28",
+      "libelle": "Decoweb",
+      "montant": 1081.58
+    },
+    {
+      "date": "2026-09-30",
+      "libelle": "Adeo*Leroy Merlin",
+      "montant": 9.99
+    },
+    {
+      "date": "2026-09-30",
+      "libelle": "Maisonsdumonde",
+      "montant": 221.33
+    },
+    {
+      "date": "2026-10-05",
+      "libelle": "Castorama",
+      "montant": 10.88
+    },
+    {
+      "date": "2026-10-06",
+      "libelle": "EC Rénov (chantier)",
+      "montant": 5747.5
+    },
+    {
+      "date": "2026-10-07",
+      "libelle": "Nova Rénovation",
+      "montant": 4490.0
+    },
+    {
+      "date": "2026-10-07",
+      "libelle": "Hudsonreed *Online",
+      "montant": 538.65
+    }
+  ]
 }

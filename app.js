@@ -115,8 +115,8 @@ function removeTodo(id) {
 
 /* ---------- Budget ---------- */
 /* 6 comptes : Boursorama et Société Générale × Louise, Quentin, Foxerie (joint).
-   Opérations signées (négatif = débit). type "versement" = virement d'un compte perso vers un compte Foxerie
-   (avec "qui"), type "interne" = autre mouvement entre vos comptes, ignoré dans les totaux. */
+   Opérations signées (négatif = débit). type "versement" = argent entre un compte perso et un compte Foxerie
+   (avec "qui"), type "interne" = épargne, prêts familiaux, virements entre ses propres comptes : hors totaux. */
 const SCOPES = [
   { k: "foxerie", n: "Foxerie" },
   { k: "louise", n: "Louise" },
@@ -124,7 +124,8 @@ const SCOPES = [
 ];
 const HOLDERS = { louise: "Louise", quentin: "Quentin", foxerie: "Foxerie (joint)" };
 const BANK_SHORT = { "Boursorama": "Bourso", "Société Générale": "SG" };
-let fin = null, curMonth = todayKey(), minMonth = todayKey(), maxMonth = todayKey();
+const YEAR = "annee";
+let fin = null, curMonth = YEAR, minMonth = todayKey(), maxMonth = todayKey(), lastMonth = todayKey();
 let scope = store.get("foxerie.scope", "foxerie");
 if (!SCOPES.some(s => s.k === scope)) scope = "foxerie";
 
@@ -133,13 +134,11 @@ function setupBudget(data) {
   fin.comptes = fin.comptes || [];
   fin.operations = fin.operations || [];
   const months = fin.operations.map(o => monthKey(o.date)).sort();
-  if (months.length) {
-    minMonth = months[0];
-    maxMonth = months[months.length - 1] > todayKey() ? months[months.length - 1] : todayKey();
-    curMonth = months[months.length - 1];
-  }
-  $("#m-prev").onclick = () => { curMonth = shiftMonth(curMonth, -1); renderBudget(); };
+  if (months.length) { minMonth = months[0]; maxMonth = months[months.length - 1]; }
+  lastMonth = maxMonth;
+  $("#m-prev").onclick = () => { curMonth = curMonth === YEAR ? maxMonth : shiftMonth(curMonth, -1); renderBudget(); };
   $("#m-next").onclick = () => { curMonth = shiftMonth(curMonth, 1); renderBudget(); };
+  $("#m-year").onclick = () => { curMonth = curMonth === YEAR ? lastMonth : YEAR; renderBudget(); };
   $("#scope").innerHTML = SCOPES.map(s => `<button type="button" data-scope="${s.k}">${s.n}</button>`).join("");
   $("#scope").addEventListener("click", e => {
     const k = e.target.dataset.scope; if (!k) return;
@@ -149,116 +148,118 @@ function setupBudget(data) {
 }
 
 const compte = id => fin.comptes.find(c => c.id === id) || {};
-const isDepense = o => o.montant < 0 && o.type !== "interne" && o.type !== "versement";
-const isRevenu = o => o.montant > 0 && o.type !== "interne" && o.type !== "versement";
+const isDepense = o => o.montant < 0 && !o.type;
+const isRevenu = o => o.montant > 0 && !o.type;
+const dateFr = d => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 
 function soldesCard() {
   const banks = [...new Set(fin.comptes.map(c => c.banque))];
-  const anySolde = fin.comptes.some(c => c.solde != null);
-  const dates = fin.comptes.map(c => c.date_solde).filter(Boolean).sort();
-  const cell = c => c && c.solde != null ? `<td class="r">${fmt(c.solde, true)}</td>` : `<td class="r muted">—</td>`;
+  const cell = c => c && c.solde != null
+    ? `<td class="r ${c.solde < 0 ? "neg" : ""}" title="au ${dateFr(c.date_solde)}">${fmt(c.solde, true)}<small class="sub-d">${new Date(c.date_solde).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })}</small></td>`
+    : `<td class="r muted">pas de relevé</td>`;
   const rows = ["foxerie", "louise", "quentin"].map(h => {
     const cs = banks.map(b => fin.comptes.find(c => c.banque === b && c.titulaire === h));
-    const tot = sum(cs.filter(Boolean), c => c.solde);
-    const has = cs.some(c => c && c.solde != null);
-    return `<tr class="${h === scope ? "sel" : ""}"><td><i class="dotw w-${h}"></i>${HOLDERS[h]}</td>${cs.map(cell).join("")}<td class="r"><b>${has ? fmt(tot, true) : "—"}</b></td></tr>`;
+    const has = cs.filter(c => c && c.solde != null);
+    return `<tr class="${h === scope ? "sel" : ""}"><td><i class="dotw w-${h}"></i>${HOLDERS[h]}</td>${cs.map(cell).join("")}<td class="r"><b>${has.length ? fmt(sum(has, c => c.solde), true) : "—"}</b></td></tr>`;
   }).join("");
+  const missing = fin.comptes.filter(c => !c.releves).map(c => `${BANK_SHORT[c.banque] || c.banque} ${HOLDERS[c.titulaire].replace(" (joint)", "")}`);
   return `<div class="card">
     <h3>Soldes des 6 comptes</h3>
     <div class="scroll"><table class="tx">
       <thead><tr><th>Titulaire</th>${banks.map(b => `<th class="r">${esc(b)}</th>`).join("")}<th class="r">Total</th></tr></thead>
       <tbody>${rows}</tbody>
     </table></div>
-    <p class="note">${anySolde ? `Soldes au ${new Date(dates[dates.length - 1]).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}.` : "Les soldes s'afficheront avec les relevés de chaque compte."}</p>
+    <p class="note">Solde à la date du dernier relevé (jour/mois sous le montant).${missing.length ? ` Relevés manquants : ${missing.join(", ")}.` : ""}</p>
   </div>`;
 }
 
 function renderBudget() {
+  const isYear = curMonth === YEAR;
+  const year = (isYear ? maxMonth : curMonth).slice(0, 4);
+  const inPeriod = o => isYear ? o.date.startsWith(year) : monthKey(o.date) === curMonth;
   document.querySelectorAll("#scope button").forEach(b => b.setAttribute("aria-pressed", b.dataset.scope === scope));
-  $("#m-label").textContent = monthName(curMonth);
-  $("#m-prev").disabled = curMonth <= minMonth;
-  $("#m-next").disabled = curMonth >= maxMonth;
+  $("#m-label").textContent = isYear ? "Année " + year : monthName(curMonth);
+  $("#m-year").textContent = isYear ? "Par mois" : "Toute l'année";
+  $("#m-prev").disabled = !isYear && curMonth <= minMonth;
+  $("#m-next").disabled = isYear || curMonth >= maxMonth;
   $("#h-budget").textContent = scope === "foxerie" ? "Budget commun" : "Comptes de " + HOLDERS[scope];
   $("#budget-sub").textContent = scope === "foxerie"
     ? "Comptes joints Foxerie chez Boursorama et à la Société Générale. Chacun y verse selon ses moyens."
     : `Comptes personnels de ${HOLDERS[scope]} chez Boursorama et à la Société Générale.`;
 
-  const ids = fin.comptes.filter(c => c.titulaire === scope).map(c => c.id);
+  const accounts = fin.comptes.filter(c => c.titulaire === scope);
+  const ids = accounts.map(c => c.id);
   const allScope = fin.operations.filter(o => ids.includes(o.compte));
-  const tx = allScope.filter(o => monthKey(o.date) === curMonth);
+  const tx = allScope.filter(inPeriod);
   const deps = tx.filter(isDepense);
   const totalDep = -sum(deps, o => o.montant);
+  const per = isYear ? "sur l'année" : "ce mois";
 
   const vm = fin.versements_mensuels || {};
   const pl = Number(vm.louise) || 0, pq = Number(vm.quentin) || 0, prevu = pl + pq;
 
-  let kpis, entrees;
-  if (scope === "foxerie") {
-    const vers = tx.filter(o => o.type === "versement" && o.montant > 0);
-    const recuL = sum(vers.filter(v => v.qui === "louise"), v => v.montant);
-    const recuQ = sum(vers.filter(v => v.qui === "quentin"), v => v.montant);
-    const autres = sum(tx.filter(isRevenu), o => o.montant);
-    entrees = (vers.length ? recuL + recuQ : prevu) + autres;
-    const reste = entrees - totalDep;
-    kpis = [
-      { l: vers.length ? "Versé ce mois" : "Versements prévus", v: fmt(entrees), d: vers.length ? `Louise ${fmt(recuL)} · Quentin ${fmt(recuQ)}` : "Louise + Quentin" },
-      { l: "Dépenses communes", v: fmt(totalDep), d: `${deps.length} opération${deps.length > 1 ? "s" : ""}` },
-      { l: "Reste", v: fmt(reste), c: reste >= 0 ? "pos" : "neg", d: entrees ? pct.format(totalDep / entrees) + " du budget utilisé" : "—" }
-    ];
-  } else {
-    const rev = sum(tx.filter(isRevenu), o => o.montant);
-    const verse = -sum(tx.filter(o => o.type === "versement" && o.montant < 0), o => o.montant);
-    entrees = rev;
-    kpis = [
-      { l: "Revenus", v: fmt(rev), d: "Salaires et autres crédits" },
-      { l: "Dépenses perso", v: fmt(totalDep), d: `${deps.length} opération${deps.length > 1 ? "s" : ""}` },
-      { l: "Versé à Foxerie", v: fmt(verse), d: vm[scope] ? `Prévu : ${fmt(vm[scope])} par mois` : "Montant prévu à renseigner" }
-    ];
-  }
-
-  const share = prevu ? [pl / prevu, pq / prevu] : [0, 0];
-  const versCard = scope !== "foxerie" ? "" : `
-    <div class="card">
-      <h3>Qui verse quoi</h3>
-      ${prevu ? `
-        <div class="split" role="img" aria-label="Louise ${pct.format(share[0])}, Quentin ${pct.format(share[1])}">
-          <span class="who-l" style="width:${share[0] * 100}%"></span><span class="who-q" style="width:${share[1] * 100}%"></span>
-        </div>
-        <div class="legend">
-          <span><i class="who-l"></i>Louise <b class="num">${fmt(pl)}</b> · ${pct.format(share[0])}</span>
-          <span><i class="who-q"></i>Quentin <b class="num">${fmt(pq)}</b> · ${pct.format(share[1])}</span>
-        </div>`
-      : `<p class="empty">Montants mensuels à renseigner (Louise : xxx €, Quentin : xxx €).</p>`}
-    </div>`;
-
-  if (!fin.operations.length) {
+  if (!allScope.length) {
     $("#budget-body").innerHTML = `
       <div class="card waiting">
-        <strong>En attente des relevés bancaires</strong>
-        <span class="muted">Il faut l'export CSV de chacun des 6 comptes (Boursorama et Société Générale, pour Louise, Quentin et Foxerie). Ensuite ce tableau montre les dépenses du mois, la répartition par catégorie et ce qui reste.</span>
-      </div>
-      ${soldesCard()}${versCard}`;
+        <strong>Pas encore de relevés pour ${HOLDERS[scope]}</strong>
+        <span class="muted">Il manque les relevés de ${accounts.map(c => esc(c.banque)).join(" et ")}. Dès qu'ils sont ajoutés, cette vue montre revenus, dépenses et versements à Foxerie.</span>
+      </div>${soldesCard()}`;
     return;
   }
 
+  let kpis, versCard = "";
+  if (scope === "foxerie") {
+    const vers = tx.filter(o => o.type === "versement");
+    const vL = sum(vers.filter(v => v.qui === "louise"), v => v.montant);
+    const vQ = sum(vers.filter(v => v.qui === "quentin"), v => v.montant);
+    const aides = sum(tx.filter(isRevenu), o => o.montant);
+    const entrees = vL + vQ + aides;
+    const reste = entrees - totalDep;
+    kpis = [
+      { l: "Entrées " + per, v: fmt(entrees), d: `Versements nets et aides` },
+      { l: "Dépenses communes", v: fmt(totalDep), d: `${deps.length} opération${deps.length > 1 ? "s" : ""}` },
+      { l: "Solde de la période", v: fmt(reste), c: reste >= 0 ? "pos" : "neg", d: entrees > 0 ? pct.format(totalDep / entrees) + " des entrées dépensées" : "—" }
+    ];
+    const parts = [
+      { k: "q", n: "Quentin", v: vQ, cls: "who-q" },
+      { k: "l", n: "Louise", v: vL, cls: "who-l" },
+      { k: "a", n: "CAF, CPAM, mutuelle", v: aides, cls: "who-a" }
+    ];
+    const pos = parts.filter(p => p.v > 0), tot = sum(pos, p => p.v) || 1;
+    versCard = `
+      <div class="card">
+        <h3>Qui alimente Foxerie ${per}</h3>
+        <div class="split" role="img" aria-label="Répartition des entrées">${pos.map(p => `<span class="${p.cls}" style="width:${(p.v / tot) * 100}%"></span>`).join("")}</div>
+        <div class="legend">${parts.map(p => `<span><i class="${p.cls}"></i>${p.n} <b class="num ${p.v < 0 ? "neg" : ""}">${fmt(p.v)}</b>${p.v > 0 ? " · " + pct.format(p.v / tot) : ""}</span>`).join("")}</div>
+        <p class="note">Versements nets : ce que chacun a versé, moins ce que Foxerie lui a reversé (indemnités, avances). Les frais avancés et remboursés par Foxerie comptent comme dépenses communes.${prevu ? ` Prévu chaque mois : Louise ${fmt(pl)}, Quentin ${fmt(pq)}.` : ""}</p>
+      </div>`;
+  } else {
+    const rev = sum(tx.filter(isRevenu), o => o.montant);
+    const verse = -sum(tx.filter(o => o.type === "versement"), o => o.montant);
+    kpis = [
+      { l: "Revenus " + per, v: fmt(rev), d: "Salaire et autres crédits" },
+      { l: "Dépenses perso", v: fmt(totalDep), d: `${deps.length} opération${deps.length > 1 ? "s" : ""}` },
+      { l: "Versé à Foxerie", v: fmt(verse), d: "Net des sommes reçues de Foxerie" }
+    ];
+  }
+
   const byCat = {};
-  deps.forEach(o => { const c = o.categorie || "Autre"; byCat[c] = (byCat[c] || 0) - o.montant; });
+  deps.forEach(o => { const c = o.categorie || "Divers"; byCat[c] = (byCat[c] || 0) - o.montant; });
   const cats = Object.entries(byCat).sort((a, b) => b[1] - a[1]);
   const maxCat = cats.length ? cats[0][1] : 1;
 
   const hist = [];
-  for (let i = 5; i >= 0; i--) {
-    const k = shiftMonth(curMonth, -i);
-    hist.push({ k, v: -sum(allScope.filter(o => isDepense(o) && monthKey(o.date) === k), o => o.montant) });
-  }
-  const ref = scope === "foxerie" ? prevu : 0;
-  const hMax = Math.max(ref, ...hist.map(h => h.v), 1);
+  if (isYear) { for (let k = year + "-01"; k <= maxMonth && k.startsWith(year); k = shiftMonth(k, 1)) hist.push(k); }
+  else { for (let i = 5; i >= 0; i--) hist.push(shiftMonth(curMonth, -i)); }
+  const hv = hist.map(k => ({ k, v: -sum(allScope.filter(o => isDepense(o) && monthKey(o.date) === k), o => o.montant) }));
+  const hMax = Math.max(...hv.map(h => h.v), 1);
 
   const typeChip = o => {
-    if (o.type === "versement") return o.montant > 0 ? "Versement " + (HOLDERS[o.qui] || "") : "Vers Foxerie";
-    if (o.type === "interne") return "Virement interne";
-    return o.categorie || "Autre";
+    if (o.type === "versement") return o.qui === "louise" ? "Versement Louise" : "Versement Quentin";
+    if (o.type === "interne") return o.categorie || "Interne";
+    return o.categorie || "Divers";
   };
+  const shown = isYear ? deps.slice().sort((a, b) => a.montant - b.montant).slice(0, 40) : tx.slice().sort((a, b) => b.date.localeCompare(a.date));
 
   $("#budget-body").innerHTML = `
     <div class="kpis">${kpis.map(k => `
@@ -268,36 +269,38 @@ function renderBudget() {
       <div class="card">
         <h3>Dépenses par catégorie</h3>
         <div class="bars">${cats.map(([c, v]) => `
-          <div class="bar-row"><span>${esc(c)}</span><div class="bar"><span style="width:${(v / maxCat) * 100}%"></span></div><b class="num">${fmt(v)}</b></div>`).join("") || `<p class="empty">Aucune dépense ce mois-ci.</p>`}
+          <div class="bar-row"><span>${esc(c)}</span><div class="bar"><span style="width:${(v / maxCat) * 100}%"></span></div><b class="num">${fmt(v)}</b></div>`).join("") || `<p class="empty">Aucune dépense ${per}.</p>`}
         </div>
       </div>
-      <div class="card">
-        <h3>Dépenses sur six mois</h3>
-        <div class="hist" role="img" aria-label="Dépenses des six derniers mois">
-          ${ref ? `<div class="ref" style="bottom:${(ref / hMax) * 100}%" title="Versements prévus ${fmt(ref)}"></div>` : ""}
-          ${hist.map(h => `<div class="m${h.k === curMonth ? " cur" : ""}" title="${monthName(h.k)} : ${fmt(h.v)}">
-            <div class="col-b" style="height:${Math.max(2, (h.v / hMax) * 100)}%"></div></div>`).join("")}
+      <div class="stack">
+        <div class="card">
+          <h3>${isYear ? "Dépenses mois par mois" : "Dépenses sur six mois"}</h3>
+          <div class="hist" role="img" aria-label="Dépenses par mois">
+            ${hv.map(h => `<div class="m${h.k === curMonth ? " cur" : ""}" title="${monthName(h.k)} : ${fmt(h.v)}">
+              <div class="col-b" style="height:${Math.max(2, (h.v / hMax) * 100)}%"></div></div>`).join("")}
+          </div>
+          <div class="hist-lab">${hv.map(h => `<small>${monthShort(h.k)}</small>`).join("")}</div>
+          <p class="note">Plus haut : ${fmt(hMax)} en ${monthName(hv.reduce((a, b) => b.v > a.v ? b : a).k)}.</p>
         </div>
-        <div class="hist-lab">${hist.map(h => `<small>${monthShort(h.k)}</small>`).join("")}</div>
-        ${ref ? `<p class="note">Pointillés : versements prévus (${fmt(ref)}).</p>` : ""}
+        ${versCard}
       </div>
     </div>
-    ${versCard}
     ${soldesCard()}
     <div class="card">
-      <h3>Opérations du mois</h3>
+      <h3>${isYear ? "Les 40 plus grosses dépenses de l'année" : "Opérations du mois"}</h3>
       <div class="scroll">
         <table class="tx">
           <thead><tr><th>Date</th><th>Libellé</th><th>Compte</th><th>Catégorie</th><th class="r">Montant</th></tr></thead>
-          <tbody>${tx.slice().sort((a, b) => b.date.localeCompare(a.date)).map(o => `
+          <tbody>${shown.map(o => `
             <tr class="${o.type === "interne" ? "muted" : ""}"><td class="num">${new Date(o.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })}</td>
             <td>${esc(o.libelle)}</td>
-            <td><span class="chip">${esc(BANK_SHORT[compte(o.compte).banque] || compte(o.compte).banque || "?")}</span></td>
+            <td><span class="chip">${esc(BANK_SHORT[compte(o.compte).banque] || "?")}</span></td>
             <td><span class="chip">${esc(typeChip(o))}</span></td>
-            <td class="r ${o.montant > 0 ? "pos" : ""}">${o.montant > 0 ? "+" : "−"}${fmt(Math.abs(o.montant), true)}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">Aucune opération ce mois-ci.</td></tr>`}
+            <td class="r ${o.montant > 0 ? "pos" : ""}">${o.montant > 0 ? "+" : "−"}${fmt(Math.abs(o.montant), true)}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">Aucune opération ${per}.</td></tr>`}
           </tbody>
         </table>
       </div>
+      ${isYear ? "" : `<p class="note">En gris : épargne, prêts familiaux et virements entre vos propres comptes, hors totaux.</p>`}
     </div>`;
 }
 
@@ -369,7 +372,7 @@ function renderMaison(m) {
         <ol class="steps">${etapes.map((e, i) => `
           <li class="st-${esc(e.statut)}">
             <span class="dot">${e.statut === "fait" ? "✓" : i + 1}</span>
-            <div><div class="ttl">${esc(e.titre)}</div>${e.date ? `<div class="dt">${new Date(e.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</div>` : ""}</div>
+            <div><div class="ttl">${esc(e.titre)}</div>${e.date ? `<div class="dt">${new Date(e.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</div>` : ""}${e.note ? `<div class="dt">${esc(e.note)}</div>` : ""}</div>
             <span class="pill ${esc(e.statut)}">${STATUT[e.statut] || esc(e.statut)}</span>
           </li>`).join("")}
         </ol>
@@ -389,8 +392,9 @@ function renderMaison(m) {
             <dt>Emprunteur</dt><dd>${esc(pret.emprunteur || "—")}</dd>
             <dt>Capital</dt><dd>${fmt(pret.montant)}</dd>
             <dt>Taux</dt><dd>${pret.taux != null ? String(pret.taux).replace(".", ",") + " %" : `<span class="muted">à compléter</span>`}</dd>
-            <dt>Durée</dt><dd>${pret.duree_annees ? pret.duree_annees + " ans" : `<span class="muted">à compléter</span>`}</dd>
-            <dt>Mensualité (hors assurance)</dt><dd>${mensualite ? fmt(mensualite, true) : `<span class="muted">—</span>`}</dd>
+            <dt>Durée</dt><dd>${pret.duree_annees ? pret.duree_annees + " ans" : `<span class="muted">à compléter</span>`}${pret.fin ? ` · fin le ${new Date(pret.fin).toLocaleDateString("fr-FR")}` : ""}</dd>
+            ${mensualite ? `<dt>Mensualité (hors assurance)</dt><dd>${fmt(mensualite, true)}</dd>` : ""}
+            ${(pret.echeances_observees || []).map(x => `<dt>Échéance du ${new Date(x.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</dt><dd>${fmt(x.montant, true)}</dd>`).join("")}
             ${pret.assurance_mensuelle ? `<dt>Assurance</dt><dd>${fmt(pret.assurance_mensuelle, true)} / mois</dd>` : ""}
           </dl>
         </div>
@@ -399,7 +403,7 @@ function renderMaison(m) {
           <div class="row-lab" style="display:flex;justify-content:space-between"><span>${fmt(travauxFaits)} dépensés</span><b class="num">${fmt(travauxBudget)}</b></div>
           <div class="progress"><span style="width:${Math.min(100, (travauxFaits / (travauxBudget || 1)) * 100)}%"></span></div>
           ${(m.travaux || []).length
-            ? `<table class="tx"><tbody>${m.travaux.map(t => `<tr><td>${esc(t.libelle)}</td><td class="r">${fmt(t.montant)}</td></tr>`).join("")}</tbody></table>`
+            ? `<p class="note" style="margin:0 0 8px">Reste ${fmt(travauxBudget - travauxFaits)} sur le budget.</p><table class="tx"><tbody>${m.travaux.map(t => `<tr><td class="num">${t.date ? new Date(t.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : ""}</td><td>${esc(t.libelle)}</td><td class="r">${fmt(t.montant, true)}</td></tr>`).join("")}</tbody></table>`
             : `<p class="note">Aucune facture de travaux pour l'instant. Reste ${fmt(travauxBudget - travauxFaits)}.</p>`}
         </div>
       </div>
