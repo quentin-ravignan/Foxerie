@@ -31,7 +31,7 @@ function route() {
     if (a.dataset.tab === t) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
 }
-window.addEventListener("hashchange", route);
+window.addEventListener("hashchange", () => { route(); window.scrollTo(0, 0); });
 
 /* ---------- Photo et avatars ---------- */
 /* Photo de Louise et Quentin : images/foxerie.jpg. Les avatars sont des recadrages de la même photo. */
