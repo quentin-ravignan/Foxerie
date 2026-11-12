@@ -2,6 +2,14 @@
   "taches": [
     { "id": "t1", "texte": "Résilier l'ancienne assurance habitation", "qui": "quentin" },
     { "id": "t2", "texte": "Changer d'adresse (impôts, banque, CAF)", "qui": "louise" },
-    { "id": "t3", "texte": "Ouvrir les contrats électricité et eau", "qui": "ensemble" }
+    { "id": "t3", "texte": "Ouvrir les contrats électricité et eau", "qui": "ensemble" },
+    { "id": "t4", "texte": "Commander le canapé convertible de la chambre d'amis", "qui": "ensemble" },
+    { "id": "t5", "texte": "Plaque en bois de la cuisine", "qui": "ensemble" },
+    { "id": "t6", "texte": "Installer l'évier de la cave", "qui": "ensemble" },
+    { "id": "t7", "texte": "Installer le système d'alarme", "qui": "ensemble" },
+    { "id": "t8", "texte": "Installer la chatière", "qui": "ensemble" },
+    { "id": "t9", "texte": "Installer le programmateur du chauffage", "qui": "ensemble" },
+    { "id": "t10", "texte": "Installer les tringles à rideaux", "qui": "ensemble" },
+    { "id": "t11", "texte": "Installer le rideau de la chambre d'enfant", "qui": "ensemble" }
   ]
 }
