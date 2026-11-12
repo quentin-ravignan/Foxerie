@@ -1,161 +1,621 @@
 {
-  "adresse": "175 avenue, 93170 Bagnolet",
-  "ressources": [
-    {
-      "libelle": "Apport Louise",
-      "montant": 139384.14,
-      "qui": "louise"
-    },
-    {
-      "libelle": "Apport Quentin",
-      "montant": 46633.9,
-      "qui": "quentin"
-    },
-    {
-      "libelle": "Prêt SG (Quentin)",
-      "montant": 420000,
-      "qui": "pret"
-    }
-  ],
-  "depenses": [
-    {
-      "libelle": "Acquisition",
-      "montant": 500000
-    },
-    {
-      "libelle": "Agence",
-      "montant": 20000
-    },
-    {
-      "libelle": "Frais de notaire",
-      "montant": 36400
-    },
-    {
-      "libelle": "Frais de prêt",
-      "montant": 6818
-    },
-    {
-      "libelle": "Frais de courtier",
-      "montant": 2800
-    },
-    {
-      "libelle": "Travaux",
-      "montant": 40000
-    }
-  ],
-  "pret": {
-    "banque": "Société Générale",
-    "emprunteur": "Quentin",
-    "montant": 420000,
-    "taux": null,
-    "duree_annees": 25,
-    "assurance_mensuelle": null,
-    "fin": "2051-09-07",
-    "compte": "sg-foxerie",
-    "echeances_observees": [
-      {
-        "date": "2026-09-10",
-        "montant": 405.04
-      },
-      {
-        "date": "2026-10-07",
-        "montant": 1120.0
-      }
-    ]
+ "adresse": "175 avenue, 93170 Bagnolet",
+ "ressources": [
+  {
+   "libelle": "Apport Louise",
+   "montant": 139384.14,
+   "qui": "louise"
   },
-  "etapes": [
-    {
-      "titre": "Offre d'achat acceptée",
-      "statut": "fait",
-      "date": null
-    },
-    {
-      "titre": "Compromis signé",
-      "statut": "fait",
-      "date": "2026-05-15",
-      "note": "Dépôt de garantie de 15 000 € versé au notaire"
-    },
-    {
-      "titre": "Courtier FPI payé",
-      "statut": "fait",
-      "date": "2026-08-20",
-      "note": "2 800 €"
-    },
-    {
-      "titre": "Offre de prêt SG",
-      "statut": "fait",
-      "date": "2026-08-28",
-      "note": "Frais de dossier 2 000 € et caution Crédit Logement 4 818 €"
-    },
-    {
-      "titre": "Acte authentique signé",
-      "statut": "fait",
-      "date": null,
-      "note": "Début septembre 2026 : première échéance du prêt le 10/09"
-    },
-    {
-      "titre": "Travaux",
-      "statut": "en_cours",
-      "date": "2026-09-17",
-      "note": "Premier paiement à EC Rénov"
-    },
-    {
-      "titre": "Emménagement",
-      "statut": "fait",
-      "date": null,
-      "note": "Dernier loyer de l'ancien logement en août, remboursement du déménagement en octobre"
-    }
-  ],
-  "travaux": [
-    {
-      "date": "2026-09-17",
-      "libelle": "EC Rénov (chantier)",
-      "montant": 4000.0
-    },
-    {
-      "date": "2026-09-21",
-      "libelle": "EC Rénov (chantier)",
-      "montant": 3000.0
-    },
-    {
-      "date": "2026-09-24",
-      "libelle": "Maisonsdumonde",
-      "montant": 299.0
-    },
-    {
-      "date": "2026-09-28",
-      "libelle": "Decoweb",
-      "montant": 1081.58
-    },
-    {
-      "date": "2026-09-30",
-      "libelle": "Adeo*Leroy Merlin",
-      "montant": 9.99
-    },
-    {
-      "date": "2026-09-30",
-      "libelle": "Maisonsdumonde",
-      "montant": 221.33
-    },
-    {
-      "date": "2026-10-05",
-      "libelle": "Castorama",
-      "montant": 10.88
-    },
-    {
-      "date": "2026-10-06",
-      "libelle": "EC Rénov (chantier)",
-      "montant": 5747.5
-    },
-    {
-      "date": "2026-10-07",
-      "libelle": "Nova Rénovation",
-      "montant": 4490.0
-    },
-    {
-      "date": "2026-10-07",
-      "libelle": "Hudsonreed *Online",
-      "montant": 538.65
-    }
+  {
+   "libelle": "Apport Quentin",
+   "montant": 46633.9,
+   "qui": "quentin"
+  },
+  {
+   "libelle": "Prêt SG (Quentin)",
+   "montant": 420000,
+   "qui": "pret"
+  }
+ ],
+ "depenses": [
+  {
+   "libelle": "Acquisition",
+   "montant": 500000
+  },
+  {
+   "libelle": "Agence",
+   "montant": 20000
+  },
+  {
+   "libelle": "Frais de notaire",
+   "montant": 36400
+  },
+  {
+   "libelle": "Frais de prêt",
+   "montant": 6818
+  },
+  {
+   "libelle": "Frais de courtier",
+   "montant": 2800
+  },
+  {
+   "libelle": "Travaux",
+   "montant": 40000
+  }
+ ],
+ "pret": {
+  "banque": "Société Générale",
+  "emprunteur": "Quentin",
+  "montant": 420000,
+  "taux": null,
+  "duree_annees": 25,
+  "assurance_mensuelle": null,
+  "fin": "2051-09-07",
+  "compte": "sg-foxerie",
+  "echeances_observees": [
+   {
+    "date": "2026-09-10",
+    "montant": 405.04
+   },
+   {
+    "date": "2026-10-07",
+    "montant": 1120.0
+   }
   ]
+ },
+ "etapes": [
+  {
+   "titre": "Offre d'achat acceptée",
+   "statut": "fait",
+   "date": null
+  },
+  {
+   "titre": "Compromis signé",
+   "statut": "fait",
+   "date": "2026-05-15",
+   "note": "Dépôt de garantie de 15 000 € versé au notaire"
+  },
+  {
+   "titre": "Courtier FPI payé",
+   "statut": "fait",
+   "date": "2026-08-20",
+   "note": "2 800 €"
+  },
+  {
+   "titre": "Offre de prêt SG",
+   "statut": "fait",
+   "date": "2026-08-28",
+   "note": "Frais de dossier 2 000 € et caution Crédit Logement 4 818 €"
+  },
+  {
+   "titre": "Acte authentique signé",
+   "statut": "fait",
+   "date": null,
+   "note": "Début septembre 2026 : première échéance du prêt le 10/09"
+  },
+  {
+   "titre": "Travaux",
+   "statut": "en_cours",
+   "date": "2026-09-17",
+   "note": "Premier paiement à EC Rénov"
+  },
+  {
+   "titre": "Emménagement",
+   "statut": "fait",
+   "date": null,
+   "note": "Dernier loyer de l'ancien logement en août, remboursement du déménagement en octobre"
+  }
+ ],
+ "suivi": [
+  {
+   "date": "2026-05-12",
+   "libelle": "Paiement CB frais notaire compromis",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 520.0,
+   "fait": true
+  },
+  {
+   "date": "2026-05-15",
+   "libelle": "Acompte compromis",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 15000.0,
+   "fait": true
+  },
+  {
+   "date": null,
+   "libelle": "Cartons déménagement",
+   "type": "Consommables",
+   "paiement": null,
+   "qui": "foxerie",
+   "montant": 85.68,
+   "fait": true
+  },
+  {
+   "date": null,
+   "libelle": "Acompte compromis",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 10000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-06-08",
+   "libelle": "Achat mètre laser",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 12.0,
+   "fait": true
+  },
+  {
+   "date": "2026-06-08",
+   "libelle": "Achat visseuse / perceuse",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 24.0,
+   "fait": true
+  },
+  {
+   "date": "2026-06-08",
+   "libelle": "Niveau laser",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 12.0,
+   "fait": true
+  },
+  {
+   "date": "2026-08-20",
+   "libelle": "Courtière",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 2800.0,
+   "fait": true
+  },
+  {
+   "date": "2026-08-26",
+   "libelle": "Versement notaire achat",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 112322.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-17",
+   "libelle": "Rectification versement notaire",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "louise",
+   "montant": -957.0,
+   "fait": false
+  },
+  {
+   "date": "2026-08-27",
+   "libelle": "Vers compte joint : frais de dossier",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 2000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-08-27",
+   "libelle": "Vers compte joint : frais Crédit Logement",
+   "type": "Achat maison",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 4818.0,
+   "fait": true
+  },
+  {
+   "date": null,
+   "libelle": "Acompte travaux",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 5000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-01",
+   "libelle": "Matériel de protection",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 45.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-02",
+   "libelle": "Peinture",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 622.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-07",
+   "libelle": "Ponceuse, scotch, gants",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 65.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-07",
+   "libelle": "Escabeau",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 116.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-07",
+   "libelle": "Quincaillerie outils",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 20.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-08",
+   "libelle": "Mastic et autres",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 50.47,
+   "fait": true
+  },
+  {
+   "date": "2026-09-08",
+   "libelle": "Peinture antirouille",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 57.4,
+   "fait": true
+  },
+  {
+   "date": "2026-09-09",
+   "libelle": "Quincaillerie burin",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 13.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-11",
+   "libelle": "Peinture couleur bleue",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 68.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-12",
+   "libelle": "Matelas parents",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 1000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-17",
+   "libelle": "Scotch",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 12.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-12",
+   "libelle": "Remboursement outil",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "quentin",
+   "montant": 40.0,
+   "fait": true
+  },
+  {
+   "date": null,
+   "libelle": "Leroy Merlin",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 171.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-22",
+   "libelle": "Frigo",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 789.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-20",
+   "libelle": "Peinture",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 27.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-20",
+   "libelle": "Leroy Merlin",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 34.5,
+   "fait": true
+  },
+  {
+   "date": "2026-09-22",
+   "libelle": "Studio couleur",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 2007.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-22",
+   "libelle": "Cartons déménagement",
+   "type": "Travaux",
+   "paiement": null,
+   "qui": "louise",
+   "montant": 48.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-15",
+   "libelle": "Virement vers Foxerie SG",
+   "type": "EC Renov",
+   "paiement": "Virement",
+   "qui": "quentin",
+   "montant": 15000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-29",
+   "libelle": "Verrière bois",
+   "type": "Travaux",
+   "paiement": "CB",
+   "qui": "louise",
+   "montant": 736.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-29",
+   "libelle": "Virement apport travaux",
+   "type": "EC Renov",
+   "paiement": "Virement",
+   "qui": "louise",
+   "montant": 8000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-09-28",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "quentin",
+   "montant": 920.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-15",
+   "libelle": "Virement vers compte SG",
+   "type": "EC Renov",
+   "paiement": "Virement",
+   "qui": "louise",
+   "montant": 690.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-15",
+   "libelle": "Virement Bourso vers Foxerie SG",
+   "type": "EC Renov",
+   "paiement": "Virement",
+   "qui": "quentin",
+   "montant": 2310.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-13",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "quentin",
+   "montant": 800.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-19",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "foxerie",
+   "montant": 300.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-19",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "foxerie",
+   "montant": 300.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-19",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "foxerie",
+   "montant": 50.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-20",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "quentin",
+   "montant": 800.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-20",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "quentin",
+   "montant": 700.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-20",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "foxerie",
+   "montant": 300.0,
+   "fait": true
+  },
+  {
+   "date": "2026-10-29",
+   "libelle": "Virement vers SG",
+   "type": "EC Renov",
+   "paiement": "Virement",
+   "qui": "louise",
+   "montant": 5000.0,
+   "fait": true
+  },
+  {
+   "date": "2026-11-01",
+   "libelle": "Achat Leboncoin",
+   "type": "Travaux",
+   "paiement": "CB",
+   "qui": "quentin",
+   "montant": 970.0,
+   "fait": true
+  },
+  {
+   "date": null,
+   "libelle": "Crédence",
+   "type": "Travaux",
+   "paiement": "CB",
+   "qui": "louise",
+   "montant": 358.0,
+   "fait": true
+  },
+  {
+   "date": "2026-11-05",
+   "libelle": "Poignées",
+   "type": "Travaux",
+   "paiement": "CB",
+   "qui": "foxerie",
+   "montant": 49.68,
+   "fait": true
+  },
+  {
+   "date": "2026-11-01",
+   "libelle": "Espèces pour EC Rénov",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "louise",
+   "montant": 500.0,
+   "fait": true
+  },
+  {
+   "date": "2026-11-05",
+   "libelle": "Tringles et rideaux",
+   "type": "Travaux",
+   "paiement": "CB",
+   "qui": "louise",
+   "montant": 136.0,
+   "fait": true
+  },
+  {
+   "date": "2026-11-05",
+   "libelle": "Ikea Pax et autres",
+   "type": "Travaux",
+   "paiement": "CB",
+   "qui": "louise",
+   "montant": 481.0,
+   "fait": false
+  }
+ ],
+ "ec_renov": {
+  "prevu": {
+   "especes": 8700,
+   "factures": 26089
+  },
+  "paye": {
+   "especes": 8700,
+   "factures": 21418
+  },
+  "factures": [
+   {
+    "ref": "D-2026-10-12269",
+    "date": "2026-09-17",
+    "montant": 10170.5,
+    "note": "Devis : 2 virements, 4 000 € le 17/09 et 3 000 € le 21/09"
+   },
+   {
+    "ref": "F-2026-09-288",
+    "date": "2026-10-21",
+    "montant": 5747.5,
+    "note": "Un virement"
+   },
+   {
+    "ref": "F-2026-10-299",
+    "date": "2026-10-29",
+    "montant": 5500.0,
+    "note": "Un virement le 29/10"
+   }
+  ],
+  "especes": [
+   {
+    "montant": 1400
+   },
+   {
+    "montant": 250
+   },
+   {
+    "montant": 3250,
+    "note": "7 retraits entre le 13 et le 20/10"
+   },
+   {
+    "montant": 2500,
+    "date": "2026-11-04",
+    "note": "3 retraits"
+   },
+   {
+    "montant": 1300
+   }
+  ],
+  "note": "Dernière facture à venir : 4 671 €"
+ }
 }

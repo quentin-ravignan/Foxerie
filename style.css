@@ -138,6 +138,10 @@ details.done-box summary { cursor: pointer; color: var(--muted); font-size: 13.5
 .tx tr.muted td { color: var(--muted); }
 .sub-d { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
 .who-a { background: var(--ensemble); }
+.progress.over span { background: var(--bad); }
+.chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chips-row .chip b { color: var(--fg); }
+.kv dd.neg { color: var(--bad); } .kv dd.pos { color: var(--good); }
 .month .m-year { width: auto; height: 32px; border-radius: 999px; font-size: 13px; font-weight: 600; padding: 0 12px; background: var(--bg); color: var(--fg); }
 .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 720px) { .kpis { grid-template-columns: 1fr; } }

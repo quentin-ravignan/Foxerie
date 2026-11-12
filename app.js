@@ -318,7 +318,16 @@ function renderMaison(m) {
   const prix = (D.find(d => /acquisition/i.test(d.libelle)) || {}).montant || 0;
   const notaire = (D.find(d => /notaire/i.test(d.libelle)) || {}).montant || 0;
   const travauxBudget = (D.find(d => /travaux/i.test(d.libelle)) || {}).montant || 0;
-  const travauxFaits = sum(m.travaux || [], t => t.montant);
+  const suivi = m.suivi || [], ec = m.ec_renov || {};
+  const paye = {}, parType = {};
+  suivi.forEach(s => { paye[s.qui] = (paye[s.qui] || 0) + s.montant; parType[s.type] = (parType[s.type] || 0) + s.montant; });
+  const ecPaye = ec.paye ? ec.paye.especes + ec.paye.factures : 0;
+  const ecPrevu = ec.prevu ? ec.prevu.especes + ec.prevu.factures : 0;
+  const ecFinance = parType["EC Renov"] || 0;
+  const achats = parType["Travaux"] || 0;
+  const travauxFaits = ecPaye + achats;
+  const TYPE_LAB = { "EC Renov": "EC Rénov (fonds)", "Travaux": "Achats travaux", "Achat maison": "Achat maison", "Consommables": "Consommables" };
+  const QUI_LAB = { louise: "Louise", quentin: "Quentin", foxerie: "Foxerie" };
   const sansTravaux = totD - travauxBudget;
   const cls = { louise: "who-l", quentin: "who-q", pret: "who-p" };
   const ecart = Math.round((totR - totD) * 100) / 100;
@@ -379,11 +388,17 @@ function renderMaison(m) {
       </div>
       <div class="stack">
         <div class="card">
-          <h3>Apports</h3>
+          <h3>Apports : prévu et payé</h3>
           <div class="split" role="img" aria-label="Répartition des apports">
             ${apports.map(a => `<span class="${cls[a.qui]}" style="width:${(a.montant / apport) * 100}%"></span>`).join("")}
           </div>
-          <div class="legend">${apports.map(a => `<span><i class="${cls[a.qui]}"></i>${esc(a.libelle.replace(/^Apport /, ""))} <b class="num">${fmt(a.montant)}</b> · ${pct.format(a.montant / apport)}</span>`).join("")}</div>
+          ${suivi.length ? `<table class="tx">
+            <thead><tr><th></th><th class="r">Apport prévu</th><th class="r">Payé</th><th class="r">Écart</th></tr></thead>
+            <tbody>${apports.map(a => { const p = paye[a.qui] || 0, e = p - a.montant; return `<tr><td><i class="dotw w-${a.qui}"></i>${esc(a.libelle.replace(/^Apport /, ""))}</td><td class="r">${fmt(a.montant)}</td><td class="r">${fmt(p)}</td><td class="r ${e > 0 ? "neg" : "pos"}">${e > 0 ? "+" : "−"}${fmt(Math.abs(e))}</td></tr>`; }).join("")}
+            ${paye.foxerie ? `<tr><td><i class="dotw w-foxerie"></i>Foxerie</td><td class="r muted">—</td><td class="r">${fmt(paye.foxerie)}</td><td></td></tr>` : ""}</tbody>
+          </table>
+          <p class="note">Payé : total des lignes du suivi des dépenses (achat, travaux, EC Rénov). Un écart positif veut dire que la personne a déjà mis plus que son apport.</p>`
+          : `<div class="legend">${apports.map(a => `<span><i class="${cls[a.qui]}"></i>${esc(a.libelle.replace(/^Apport /, ""))} <b class="num">${fmt(a.montant)}</b> · ${pct.format(a.montant / apport)}</span>`).join("")}</div>`}
         </div>
         <div class="card">
           <h3>Prêt immobilier</h3>
@@ -400,14 +415,34 @@ function renderMaison(m) {
         </div>
         <div class="card">
           <h3>Budget travaux</h3>
-          <div class="row-lab" style="display:flex;justify-content:space-between"><span>${fmt(travauxFaits)} dépensés</span><b class="num">${fmt(travauxBudget)}</b></div>
-          <div class="progress"><span style="width:${Math.min(100, (travauxFaits / (travauxBudget || 1)) * 100)}%"></span></div>
-          ${(m.travaux || []).length
-            ? `<p class="note" style="margin:0 0 8px">Reste ${fmt(travauxBudget - travauxFaits)} sur le budget.</p><table class="tx"><tbody>${m.travaux.map(t => `<tr><td class="num">${t.date ? new Date(t.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : ""}</td><td>${esc(t.libelle)}</td><td class="r">${fmt(t.montant, true)}</td></tr>`).join("")}</tbody></table>`
-            : `<p class="note">Aucune facture de travaux pour l'instant. Reste ${fmt(travauxBudget - travauxFaits)}.</p>`}
+          <div class="row-lab" style="display:flex;justify-content:space-between"><span>${fmt(travauxFaits)} dépensés</span><b class="num">sur ${fmt(travauxBudget)}</b></div>
+          <div class="progress${travauxFaits > travauxBudget ? " over" : ""}"><span style="width:${Math.min(100, (travauxFaits / (travauxBudget || 1)) * 100)}%"></span></div>
+          <dl class="kv">
+            <dt>EC Rénov payé (espèces + factures)</dt><dd>${fmt(ecPaye, true)}</dd>
+            <dt>EC Rénov prévu</dt><dd>${fmt(ecPrevu, true)}</dd>
+            <dt>Achats et équipement</dt><dd>${fmt(achats, true)}</dd>
+            <dt>${travauxFaits > travauxBudget ? "Dépassement" : "Reste"}</dt><dd class="${travauxFaits > travauxBudget ? "neg" : "pos"}">${fmt(Math.abs(travauxBudget - travauxFaits), true)}</dd>
+          </dl>
+          ${ec.note ? `<p class="note">${esc(ec.note)}. Mis de côté pour EC Rénov : ${fmt(ecFinance)}, soit ${fmt(ecFinance - ecPaye)} pas encore dépensés.</p>` : ""}
+          ${(ec.factures || []).length ? `<table class="tx" style="margin-top:8px"><thead><tr><th>Facture EC Rénov</th><th class="r">Montant</th></tr></thead><tbody>${ec.factures.map(f => `<tr><td>${esc(f.ref)}<small class="sub-d">${esc(f.note || "")}</small></td><td class="r">${fmt(f.montant, true)}</td></tr>`).join("")}</tbody></table>` : ""}
         </div>
       </div>
-    </div>`;
+    </div>
+    ${suivi.length ? `<div class="card">
+      <h3>Suivi des dépenses de la maison</h3>
+      <div class="chips-row">${Object.entries(parType).map(([t, v]) => `<span class="chip">${esc(TYPE_LAB[t] || t)} · <b>${fmt(v)}</b></span>`).join("")}</div>
+      <div class="scroll"><table class="tx">
+        <thead><tr><th>Date</th><th>Dépense</th><th>Type</th><th>Payé par</th><th class="r">Montant</th></tr></thead>
+        <tbody>${suivi.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "")).map(s => `
+          <tr><td class="num">${s.date ? new Date(s.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : "—"}</td>
+          <td>${esc(s.libelle)}${s.fait ? "" : ` <span class="pill a_faire">à payer</span>`}</td>
+          <td><span class="chip">${esc(TYPE_LAB[s.type] || s.type)}</span></td>
+          <td><i class="dotw w-${s.qui}"></i>${esc(QUI_LAB[s.qui] || s.qui)}</td>
+          <td class="r">${fmt(s.montant, true)}</td></tr>`).join("")}
+        </tbody>
+      </table></div>
+      <p class="note">Repris du tableur « Suivi dépenses ». Les lignes EC Rénov sont l'argent mis de côté pour payer l'entreprise (virements vers le compte SG, espèces).</p>
+    </div>` : ""}`;
 }
 
 /* ---------- Démarrage ---------- */
