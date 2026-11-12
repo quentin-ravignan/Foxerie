@@ -35,7 +35,7 @@ window.addEventListener("hashchange", route);
 
 /* ---------- Photo et avatars ---------- */
 /* Photo de Louise et Quentin : images/foxerie.jpg. Les avatars sont des recadrages de la même photo. */
-const PHOTO = { src: "images/foxerie.jpg", cadre: "center 30%", quentin: "8% 18%", louise: "70% 16%", zoom: "520%" };
+const PHOTO = { src: "images/foxerie.jpg", cadre: "center 30%", quentin: "3% 10%", louise: "59% 13%", zoom: "520%" };
 const AV_COLORS = { louise: "var(--louise)", quentin: "var(--quentin)" };
 const avatar = k => `<span class="av av-${k}" style="--c:${AV_COLORS[k]}">${k === "louise" ? "L" : "Q"}</span>`;
 function loadPhoto() {
