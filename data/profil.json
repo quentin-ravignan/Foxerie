@@ -1,0 +1,278 @@
+{
+ "reliefweb_appname": "",
+ "nom": "Quentin Ravignan",
+ "titre": "Applications Team Manager · Digital & IA",
+ "accroche_fr": "Quatorze ans dans la transformation numérique, dont les dernières années au service des opérations humanitaires : je conçois et je fais livrer des applications, des automatisations et des agents IA utilisés sur le terrain.",
+ "accroche_en": "Fourteen years in digital transformation, most recently serving humanitarian operations: I design and deliver applications, automations and AI agents that field teams actually use.",
+ "experiences": [
+  {
+   "id": "acted-apps",
+   "poste": "Applications Team Manager",
+   "structure": "Acted",
+   "periode": "depuis nov. 2025",
+   "tags": [
+    "digital",
+    "ai",
+    "product",
+    "management",
+    "lowcode",
+    "data",
+    "humanitarian",
+    "strategy"
+   ],
+   "fr": "Chez Acted, je dirige l'équipe Applications (Product Owners et développeurs) et je porte la feuille de route numérique et IA du groupe. Nous construisons des applications low-code et des pipelines de données (Power Apps, Power Automate, Power BI, Claude/MCP) pour la collecte de données terrain et le reporting, ainsi que des agents IA pour le siège et les pays (collecte par WhatsApp, rapports terrain, plateformes d'alerte).",
+   "en": "At Acted I lead the Applications team (Product Owners and developers) and own the group's digital and AI roadmap. We build low-code apps and data pipelines (Power Apps, Power Automate, Power BI, Claude/MCP) for field data collection and reporting, and AI agents for HQ and country offices (WhatsApp data collection, field reporting, alert platforms)."
+  },
+  {
+   "id": "acted-factory",
+   "poste": "Digital Factory Manager",
+   "structure": "Acted",
+   "periode": "2024-2025",
+   "tags": [
+    "digital",
+    "lowcode",
+    "automation",
+    "humanitarian",
+    "data",
+    "climate"
+   ],
+   "fr": "Comme Digital Factory Manager, j'ai créé des applications pour les équipes de 43 pays avec des outils no-code et IA, automatisé des processus de plusieurs départements et réduit coûts, temps et empreinte carbone par la dématérialisation.",
+   "en": "As Digital Factory Manager I delivered apps for teams in 43 countries with no-code and AI tools, automated processes across departments, and cut cost, time and carbon footprint through digitisation."
+  },
+  {
+   "id": "fintech",
+   "poste": "Products & Partnerships Director, puis Head of Payment",
+   "structure": "Wizall Money (Afrique de l'Ouest), Deezer",
+   "periode": "2019-2023",
+   "tags": [
+    "product",
+    "fintech",
+    "cash",
+    "partnerships",
+    "africa",
+    "management"
+   ],
+   "fr": "J'ai dirigé les produits et partenariats d'une fintech ouest-africaine sur quatre pays (UNCDF, FIDA, microcrédit, solaire hors réseau), puis l'équipe Paiements de Deezer.",
+   "en": "I led products and partnerships for a West African fintech across four countries (UNCDF, IFAD, microcredit, off-grid solar), then Deezer's Payments team."
+  },
+  {
+   "id": "orange-money",
+   "poste": "Project Director Orange Money",
+   "structure": "Orange, Sonatel",
+   "periode": "2014-2018",
+   "tags": [
+    "fintech",
+    "cash",
+    "africa",
+    "project",
+    "it"
+   ],
+   "fr": "J'ai déployé Orange Money en RDC, Sierra Leone, Guinée-Bissau et Sénégal, en coordonnant des équipes techniques d'Afrique, d'Inde, d'Europe et de Chine.",
+   "en": "I rolled out Orange Money in DRC, Sierra Leone, Guinea-Bissau and Senegal, coordinating technical teams across Africa, India, Europe and China."
+  },
+  {
+   "id": "surfrider",
+   "poste": "Co-fondateur",
+   "structure": "Surfrider Foundation Senegal",
+   "periode": "depuis 2020",
+   "tags": [
+    "environment",
+    "climate",
+    "fundraising",
+    "africa",
+    "ngo"
+   ],
+   "fr": "J'ai cofondé Surfrider Foundation Sénégal : stratégie, projets (déchets marins, qualité de l'eau, littoral), bénévoles, finances et recherche de fonds.",
+   "en": "I co-founded Surfrider Foundation Senegal: strategy, projects (marine litter, water quality, coastline), volunteers, finance and fundraising."
+  },
+  {
+   "id": "ise",
+   "poste": "Executive Master Management, Ingénierie et Droit de l'environnement",
+   "structure": "Institut Supérieur de l'Environnement",
+   "periode": "2024",
+   "tags": [
+    "environment",
+    "climate",
+    "strategy"
+   ],
+   "fr": "Un Executive Master en management et droit de l'environnement (ISE) complète ce parcours.",
+   "en": "An Executive Master in environmental management, engineering and law (ISE) completes this background."
+  }
+ ],
+ "langues": [
+  "français",
+  "anglais"
+ ],
+ "recherches": [
+  "digital transformation",
+  "\"information management\"",
+  "ICT manager",
+  "\"head of IT\"",
+  "\"artificial intelligence\"",
+  "\"product owner\"",
+  "\"product manager\"",
+  "\"digital\" manager",
+  "innovation manager",
+  "\"data\" manager",
+  "\"power platform\"",
+  "\"mobile money\"",
+  "\"digital cash\""
+ ],
+ "mots_cles": {
+  "digital": {
+   "poids": 4,
+   "termes": [
+    "digital",
+    "numérique",
+    "digitalisation",
+    "digitisation",
+    "digitalization",
+    "transformation"
+   ]
+  },
+  "ai": {
+   "poids": 5,
+   "termes": [
+    "artificial intelligence",
+    "intelligence artificielle",
+    " ai ",
+    "ai-",
+    "genai",
+    "llm",
+    "machine learning",
+    "chatbot",
+    "copilot",
+    "agents"
+   ]
+  },
+  "product": {
+   "poids": 4,
+   "termes": [
+    "product owner",
+    "product manager",
+    "product lead",
+    "head of product"
+   ]
+  },
+  "it": {
+   "poids": 3,
+   "termes": [
+    "ict",
+    " it ",
+    "information technology",
+    "information systems",
+    "systèmes d'information",
+    "technology",
+    "tech "
+   ]
+  },
+  "data": {
+   "poids": 3,
+   "termes": [
+    "information management",
+    "data",
+    "données",
+    "dashboard",
+    "power bi",
+    "business intelligence"
+   ]
+  },
+  "lowcode": {
+   "poids": 4,
+   "termes": [
+    "power apps",
+    "power platform",
+    "power automate",
+    "low-code",
+    "low code",
+    "no-code",
+    "kobo",
+    "odk"
+   ]
+  },
+  "management": {
+   "poids": 3,
+   "termes": [
+    "head of",
+    "manager",
+    "director",
+    "directeur",
+    "directrice",
+    "responsable",
+    "lead",
+    "chief",
+    "coordinator"
+   ]
+  },
+  "fintech": {
+   "poids": 2,
+   "termes": [
+    "mobile money",
+    "fintech",
+    "digital cash",
+    "cash transfer",
+    "cva",
+    "payments",
+    "paiement"
+   ]
+  },
+  "strategy": {
+   "poids": 2,
+   "termes": [
+    "strategy",
+    "stratégie",
+    "roadmap",
+    "innovation"
+   ]
+  },
+  "climate": {
+   "poids": 1,
+   "termes": [
+    "climate",
+    "climat",
+    "environment",
+    "environnement"
+   ]
+  }
+ },
+ "exclure": [
+  "intern",
+  "internship",
+  "stage",
+  "stagiaire",
+  "volunteer",
+  "volontaire",
+  "driver",
+  "chauffeur",
+  "accountant",
+  "comptable",
+  "nurse",
+  "infirmier",
+  "doctor",
+  "médecin",
+  "guard",
+  "cleaner",
+  "cook",
+  "assistant",
+  "consultancy for",
+  "enumerator",
+  "translator"
+ ],
+ "lieux": {
+  "France": 4,
+  "Paris": 4,
+  "Senegal": 3,
+  "Sénégal": 3,
+  "Dakar": 3,
+  "Remote": 3,
+  "Home-based": 3,
+  "Home based": 3,
+  "Switzerland": 2,
+  "Geneva": 2,
+  "Genève": 2,
+  "Belgium": 1,
+  "Brussels": 1,
+  "World": 2
+ },
+ "score_min": 25
+}

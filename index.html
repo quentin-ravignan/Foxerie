@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -41,6 +41,7 @@
       <a href="#taches" data-tab="taches">Tâches</a>
       <a href="#budget" data-tab="budget">Budget</a>
       <a href="#maison" data-tab="maison">Maison</a>
+      <a href="#emploi" data-tab="emploi">Emploi</a>
     </nav>
   </div>
 </header>
@@ -97,8 +98,18 @@
     <div id="maison-body"></div>
   </section>
 
+  <!-- EMPLOI -->
+  <section id="v-emploi" class="view" aria-labelledby="h-emploi" hidden>
+    <div class="view-head">
+      <h2 id="h-emploi">Veille emploi</h2>
+      <p class="sub">Offres qui correspondent au profil de Quentin (digital, IA, applications, humanitaire), notées sur 100, avec un brouillon de lettre à relire. Les statuts et offres collées restent sur cet appareil.</p>
+    </div>
+    <div id="emploi-body"></div>
+  </section>
+
 </main>
 <footer class="wrap foot">Foxerie · données dans <code>data/</code></footer>
-<script src="app.js?v=11"></script>
+<script src="app.js?v=12"></script>
+<script src="emploi.js?v=12"></script>
 </body>
 </html>

@@ -284,3 +284,46 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
   .hh-img { min-height: 260px; background-position: center 40%; }
   .hh-img::after { background: linear-gradient(0deg, var(--surface) 0, transparent 25%); }
 }
+
+/* Veille emploi */
+.btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 10px; padding: 7px 12px; font-weight: 600; font-size: 13.5px; cursor: pointer; text-decoration: none; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-deep); }
+.btn.ghost { background: none; color: var(--muted); }
+.btn:disabled { opacity: .45; cursor: default; }
+.emploi-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.emploi-bar .seg { margin-left: 0; flex-wrap: wrap; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-deep); }
+.range { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); }
+.range input { accent-color: var(--accent); width: 140px; }
+.offres { display: grid; gap: 12px; }
+.offre { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; }
+.offre.st-ecarte { opacity: .6; }
+.offre.st-postule { border-color: var(--good); }
+.offre-score { width: 64px; height: 64px; border-radius: 16px; display: grid; place-content: center; text-align: center; line-height: 1; }
+.offre-score b { font-family: var(--display); font-size: 24px; }
+.offre-score small { font-size: 11px; opacity: .7; }
+.offre-score.fort { background: var(--accent); color: var(--on-accent); }
+.offre-score.moyen { background: var(--accent-soft); color: var(--accent-deep); }
+.offre-score.faible { background: var(--bg); color: var(--muted); }
+.offre-main { min-width: 0; display: grid; gap: 8px; }
+.offre h3 { font-size: 17px; margin: 0; }
+.offre h3 a { color: var(--fg); text-decoration: none; }
+.offre h3 a:hover { color: var(--accent-deep); text-decoration: underline; }
+.offre-meta { font-size: 13.5px; color: var(--muted); }
+.offre-themes { display: flex; flex-wrap: wrap; gap: 6px; }
+.offre-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill.interesse { background: var(--accent-soft); color: var(--accent-deep); }
+.pill.postule { background: color-mix(in srgb, var(--good) 15%, var(--surface)); color: var(--good); }
+.pill.ecarte { background: var(--bg); color: var(--muted); }
+.brouillon { border-top: 1px dashed var(--line); padding-top: 12px; display: grid; gap: 10px; }
+.br-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.seg.small button { padding: 3px 10px; font-size: 12.5px; }
+.br-points { margin: 0; padding-left: 18px; font-size: 14px; display: grid; gap: 4px; }
+.brouillon textarea, .coller textarea, .coller input { width: 100%; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 10px; padding: 10px 12px; font: 14px/1.55 var(--body); }
+.brouillon textarea { min-height: 280px; resize: vertical; }
+.coller summary { cursor: pointer; }
+.coller form { display: grid; gap: 10px; margin-top: 12px; }
+.row2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } .offre { grid-template-columns: 1fr; } .offre-score { width: auto; height: auto; padding: 6px 12px; display: inline-flex; gap: 4px; justify-self: start; place-content: initial; align-items: baseline; } }

@@ -23,7 +23,7 @@ async function load(path) {
 }
 
 /* ---------- Onglets ---------- */
-const TABS = ["taches", "budget", "maison"];
+const TABS = ["taches", "budget", "maison", "emploi"];
 function route() {
   const t = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "taches";
   TABS.forEach(k => { $("#v-" + k).hidden = k !== t; });
