@@ -61,7 +61,10 @@
     "date": "2026-10-07",
     "montant": 1120.0
    }
-  ]
+  ],
+  "mensualite_actuelle": 1120,
+  "mensualite_future": 2000,
+  "prelevement": "Compte Foxerie Société Générale"
  },
  "etapes": [
   {

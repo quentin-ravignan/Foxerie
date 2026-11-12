@@ -439,7 +439,10 @@ function renderMaison(m) {
             <dt>Taux</dt><dd>${pret.taux != null ? String(pret.taux).replace(".", ",") + " %" : `<span class="muted">à compléter</span>`}</dd>
             <dt>Durée</dt><dd>${pret.duree_annees ? pret.duree_annees + " ans" : `<span class="muted">à compléter</span>`}${pret.fin ? ` · fin le ${new Date(pret.fin).toLocaleDateString("fr-FR")}` : ""}</dd>
             ${mensualite ? `<dt>Mensualité (hors assurance)</dt><dd>${fmt(mensualite, true)}</dd>` : ""}
-            ${(pret.echeances_observees || []).map(x => `<dt>Échéance du ${new Date(x.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</dt><dd>${fmt(x.montant, true)}</dd>`).join("")}
+            ${pret.mensualite_actuelle ? `<dt>Mensualité aujourd'hui</dt><dd><b>${fmt(pret.mensualite_actuelle, true)}</b></dd>` : ""}
+            ${pret.mensualite_future ? `<dt>Mensualité plus tard</dt><dd>environ ${fmt(pret.mensualite_future)}</dd>` : ""}
+            ${pret.prelevement ? `<dt>Prélevée sur</dt><dd>${esc(pret.prelevement)}</dd>` : ""}
+            ${(pret.echeances_observees || []).map(x => `<dt>Prélevé le ${new Date(x.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</dt><dd>${fmt(x.montant, true)}</dd>`).join("")}
             ${pret.assurance_mensuelle ? `<dt>Assurance</dt><dd>${fmt(pret.assurance_mensuelle, true)} / mois</dd>` : ""}
           </dl>
         </div>
