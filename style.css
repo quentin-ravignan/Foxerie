@@ -327,3 +327,30 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .coller form { display: grid; gap: 10px; margin-top: 12px; }
 .row2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } .offre { grid-template-columns: 1fr; } .offre-score { width: auto; height: auto; padding: 6px 12px; display: inline-flex; gap: 4px; justify-self: start; place-content: initial; align-items: baseline; } }
+
+/* Onglets : défilent sur petit écran */
+.top .tabs { overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+.top .tabs::-webkit-scrollbar { display: none; }
+.top .tabs a { white-space: nowrap; }
+@media (max-width: 560px) { .top .tabs a { padding: 7px 11px; font-size: 13px; } }
+
+/* Babysitting */
+.cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.cal-nav h3 { margin: 0; text-transform: capitalize; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.cal-h { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); text-align: center; font-weight: 600; }
+.cal-c { min-height: 74px; border: 1px solid var(--line); border-radius: 10px; padding: 6px; display: flex; flex-direction: column; gap: 2px; background: var(--surface); min-width: 0; overflow: hidden; }
+.cal-c.vide { border: 0; background: none; }
+.cal-c.auj { box-shadow: inset 0 0 0 2px var(--accent); }
+.cal-c.garde { background: var(--accent-soft); border-color: transparent; }
+.cal-j { font-size: 12px; color: var(--muted); font-weight: 600; }
+.cal-c b { font-family: var(--display); color: var(--accent-deep); font-size: 15px; }
+.cal-c small { font-size: 10.5px; color: var(--muted); line-height: 1.3; }
+@media (max-width: 560px) { .cal { gap: 3px; } .cal-c { min-height: 54px; padding: 4px; } .cal-c small { display: none; } .cal-c b { font-size: 12px; } }
+.tx tr.tot td { border-top: 2px solid var(--line); }
+.baby-form { display: grid; gap: 12px; }
+.baby-form label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.baby-form input { width: 100%; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 10px; padding: 11px 12px; font: 16px var(--body); }
+.baby-form input:focus { border-color: var(--accent); outline: none; }
+.btn.big { padding: 13px 16px; font-size: 16px; justify-content: center; }
+.note.pos { color: var(--good); font-weight: 600; } .note.neg { color: var(--bad); }

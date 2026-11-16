@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -41,6 +41,7 @@
       <a href="#taches" data-tab="taches">Tâches</a>
       <a href="#budget" data-tab="budget">Budget</a>
       <a href="#maison" data-tab="maison">Maison</a>
+      <a href="#babysitting" data-tab="babysitting">Babysitting</a>
       <a href="#emploi" data-tab="emploi">Emploi</a>
     </nav>
   </div>
@@ -98,6 +99,18 @@
     <div id="maison-body"></div>
   </section>
 
+  <!-- BABYSITTING -->
+  <section id="v-babysitting" class="view" aria-labelledby="h-baby" hidden>
+    <div class="view-head row">
+      <div>
+        <h2 id="h-baby">Babysitting</h2>
+        <p class="sub">Les gardes de Nephelie, déclarées par elle à la fin de chaque soirée, et ce qu'on lui doit pour le mois.</p>
+      </div>
+      <a class="btn primary" href="nephelie.html">Page de déclaration de Nephelie</a>
+    </div>
+    <div id="baby-body"></div>
+  </section>
+
   <!-- EMPLOI -->
   <section id="v-emploi" class="view" aria-labelledby="h-emploi" hidden>
     <div class="view-head">
@@ -109,7 +122,8 @@
 
 </main>
 <footer class="wrap foot">Foxerie · données dans <code>data/</code></footer>
-<script src="app.js?v=12"></script>
-<script src="emploi.js?v=12"></script>
+<script src="app.js?v=13"></script>
+<script src="emploi.js?v=13"></script>
+<script src="babysitting.js?v=13"></script>
 </body>
 </html>
