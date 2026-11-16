@@ -75,7 +75,7 @@ let local = store.get(TKEY, { ajouts: [], faits: {}, supprimes: {} });
 function allTodos() {
   return [...baseTodos, ...local.ajouts]
     .filter(t => !local.supprimes[t.id])
-    .map(t => ({ ...t, done: !!local.faits[t.id] }));
+    .map(t => ({ ...t, qui: (local.qui && local.qui[t.id]) || t.qui, done: !!local.faits[t.id] }));
 }
 function saveLocal() { store.set(TKEY, local); renderTodos(); heroStats(fin, maisonData); }
 
@@ -99,6 +99,7 @@ function itemHtml(t) {
   return `<li class="item${t.done ? " done" : ""}">
     <input type="checkbox" id="cb-${esc(t.id)}" data-id="${esc(t.id)}"${t.done ? " checked" : ""}>
     <label class="t" for="cb-${esc(t.id)}">${esc(t.texte)}</label>
+    <span class="move" role="group" aria-label="Déplacer « ${esc(t.texte)} »">${PEOPLE.filter(p => p.k !== t.qui).map(p => `<button type="button" data-move="${esc(t.id)}" data-to="${p.k}" class="mv mv-${p.k}" title="Déplacer vers ${p.n}">→ ${p.k === "ensemble" ? "À deux" : p.n}</button>`).join("")}</span>
     <button type="button" class="del" data-del="${esc(t.id)}" aria-label="Supprimer « ${esc(t.texte)} »">×</button>
   </li>`;
 }
@@ -131,7 +132,8 @@ function wireTodos() {
     saveLocal();
   });
   root.addEventListener("click", e => {
-    const del = e.target.dataset.del, clr = e.target.dataset.clear;
+    const del = e.target.dataset.del, clr = e.target.dataset.clear, mv = e.target.dataset.move;
+    if (mv) { local.qui = local.qui || {}; const own = local.ajouts.find(t => t.id === mv); if (own) own.qui = e.target.dataset.to; else local.qui[mv] = e.target.dataset.to; saveLocal(); return; }
     if (del) { removeTodo(del); saveLocal(); }
     if (clr) { allTodos().filter(t => t.qui === clr && t.done).forEach(t => removeTodo(t.id)); saveLocal(); }
   });
@@ -393,12 +395,41 @@ function renderMaison(m) {
   $("#maison-stats").innerHTML = [`Achat ${fmt(prix)}`, `Prêt ${fmt(pret.montant)}`, pret.mensualite_actuelle ? `${fmt(pret.mensualite_actuelle)} / mois aujourd'hui` : null].filter(Boolean).map(s => `<span>${esc(s)}</span>`).join("");
   $("#maison-sub").textContent = `Plan de financement de l'achat · ${nbFait} étape${nbFait > 1 ? "s" : ""} sur ${etapes.length} franchie${nbFait > 1 ? "s" : ""}.`;
 
+  // Reste à payer : lignes EC Rénov à faire + lignes du suivi pas encore payées
+  const aPayer = [
+    ...(ec.a_payer || []).map(x => ({ libelle: "EC Rénov · " + x.libelle, mode: x.mode, montant: x.montant })),
+    ...suivi.filter(s => !s.fait).map(s => ({ libelle: s.libelle, mode: /esp|cash/i.test(s.paiement || "") ? "especes" : (/vir/i.test(s.paiement || "") ? "virement" : "carte"), montant: s.montant, qui: s.qui }))
+  ];
+  const ecResteEsp = ec.prevu ? Math.max(0, ec.prevu.especes - ec.paye.especes) : 0;
+  const ecResteVir = ec.prevu ? Math.max(0, ec.prevu.factures - ec.paye.factures) : 0;
+  const autresEsp = sum(aPayer.filter(x => !x.libelle.startsWith("EC Rénov") && x.mode === "especes"), x => x.montant);
+  const autresVir = sum(aPayer.filter(x => !x.libelle.startsWith("EC Rénov") && x.mode !== "especes"), x => x.montant);
+  const resteEsp = ecResteEsp + autresEsp, resteVir = ecResteVir + autresVir;
+  const MODE = { especes: "Espèces", virement: "Virement", carte: "Carte" };
+  const resteCard = `<div class="card reste">
+      <h3>Reste à payer</h3>
+      <div class="reste-tiles">
+        <div><span class="label">En espèces</span><b>${fmt(resteEsp, true)}</b></div>
+        <div><span class="label">Par virement ou carte</span><b>${fmt(resteVir, true)}</b></div>
+        <div class="tot"><span class="label">Total</span><b>${fmt(resteEsp + resteVir, true)}</b></div>
+      </div>
+      ${aPayer.length ? `<ul class="reste-list">${aPayer.map(x => `<li><span>${esc(x.libelle)}${x.qui ? ` <small class="muted">(${esc(QUI_LAB[x.qui] || x.qui)})</small>` : ""}</span><span class="chip">${MODE[x.mode] || ""}</span><b class="num">${x.montant != null ? fmt(x.montant, true) : `<span class="muted">montant à définir</span>`}</b></li>`).join("")}</ul>` : `<p class="note">Tout est payé.</p>`}
+    </div>`;
+
+  const recup = m.a_recuperer || [];
+  const recupCard = recup.length ? `<div class="card recup">
+      <h3>À récupérer</h3>
+      <div class="reste-tiles one"><div class="tot-g"><span class="label">Total à récupérer</span><b>${fmt(sum(recup, x => x.montant), true)}</b></div></div>
+      <ul class="reste-list">${recup.map(x => `<li><span>${esc(x.libelle)}</span><span></span><b class="num">${fmt(x.montant, true)}</b></li>`).join("")}</ul>
+    </div>` : "";
+
   $("#maison-body").innerHTML = `
     <div class="kpis">
       <div class="card kpi"><div class="label">Coût total du projet</div><div class="v">${fmt(totD)}</div><div class="d">${fmt(sansTravaux)} sans les travaux</div></div>
       <div class="card kpi"><div class="label">Apport personnel</div><div class="v">${fmt(apport)}</div><div class="d">${pct.format(apport / totR)} du financement</div></div>
       <div class="card kpi"><div class="label">Prêt ${esc(pret.banque || "")}</div><div class="v">${fmt(pret.montant)}</div><div class="d">${pct.format((pret.montant || 0) / totR)} du financement · ${pct.format((pret.montant || 0) / (prix || 1))} du prix</div></div>
     </div>
+    <div class="grid2">${resteCard}${recupCard}</div>
 
     <div class="grid2">
       <div class="card">
@@ -461,7 +492,7 @@ function renderMaison(m) {
             <dt>Achats et équipement</dt><dd>${fmt(achats, true)}</dd>
             <dt>${travauxFaits > travauxBudget ? "Dépassement" : "Reste"}</dt><dd class="${travauxFaits > travauxBudget ? "neg" : "pos"}">${fmt(Math.abs(travauxBudget - travauxFaits), true)}</dd>
           </dl>
-          ${ec.note ? `<p class="note">${esc(ec.note)}. Mis de côté pour EC Rénov : ${fmt(ecFinance)}, soit ${fmt(ecFinance - ecPaye)} pas encore dépensés.</p>` : ""}
+          <p class="note">Mis de côté pour EC Rénov : ${fmt(ecFinance)}, soit ${fmt(ecFinance - ecPaye)} pas encore dépensés. Reste à payer à EC Rénov : ${fmt(ecPrevu - ecPaye, true)}.</p>
           ${(ec.factures || []).length ? `<table class="tx" style="margin-top:8px"><thead><tr><th>Facture EC Rénov</th><th class="r">Montant</th></tr></thead><tbody>${ec.factures.map(f => `<tr><td>${esc(f.ref)}<small class="sub-d">${esc(f.note || "")}</small></td><td class="r">${fmt(f.montant, true)}</td></tr>`).join("")}</tbody></table>` : ""}
         </div>
       </div>

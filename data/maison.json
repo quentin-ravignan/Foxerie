@@ -572,8 +572,8 @@
  ],
  "ec_renov": {
   "prevu": {
-   "especes": 8700,
-   "factures": 26089
+   "especes": 9250,
+   "factures": 21418
   },
   "paye": {
    "especes": 8700,
@@ -590,7 +590,7 @@
     "ref": "F-2026-09-288",
     "date": "2026-10-21",
     "montant": 5747.5,
-    "note": "Un virement"
+    "note": "Un virement le 21/09"
    },
    {
     "ref": "F-2026-10-299",
@@ -608,6 +608,7 @@
    },
    {
     "montant": 3250,
+    "date": "2026-10-29",
     "note": "7 retraits entre le 13 et le 20/10"
    },
    {
@@ -619,6 +620,27 @@
     "montant": 1300
    }
   ],
-  "note": "Dernière facture à venir : 4 671 €"
- }
+  "a_payer": [
+   {
+    "libelle": "Installation machine à laver",
+    "mode": "especes",
+    "montant": 550
+   },
+   {
+    "libelle": "Installation dérivation",
+    "mode": "especes",
+    "montant": null
+   }
+  ]
+ },
+ "a_recuperer": [
+  {
+   "libelle": "Sayada",
+   "montant": 3000
+  },
+  {
+   "libelle": "Frigo Creative",
+   "montant": 870
+  }
+ ]
 }

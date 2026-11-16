@@ -156,6 +156,26 @@ function carteOffre(o) {
   </article>`;
 }
 
+/* Recherches prêtes : liens qui ouvrent les sites d'offres avec la recherche déjà faite.
+   Les sites ne se lisent pas depuis la page : on regarde, et on colle ici les offres intéressantes. */
+const SITES = [
+  { n: "ReliefWeb", u: q => `https://reliefweb.int/jobs?search=${encodeURIComponent(q)}` },
+  { n: "LinkedIn", u: q => `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(q)}&location=${encodeURIComponent("Île-de-France, France")}` },
+  { n: "Welcome to the Jungle", u: q => `https://www.welcometothejungle.com/fr/jobs?query=${encodeURIComponent(q)}` },
+  { n: "Impactpool", u: q => `https://www.impactpool.org/search?q=${encodeURIComponent(q)}` },
+  { n: "Indeed", u: q => `https://fr.indeed.com/jobs?q=${encodeURIComponent(q)}&l=${encodeURIComponent("Île-de-France")}` }
+];
+const REQUETES = ["Head of Digital NGO", "Chief Digital Officer ONG", "AI product manager humanitarian", "Digital transformation manager", "Information management manager", "Product owner humanitaire"];
+function rechercheCard() {
+  return `<div class="card">
+    <h3>Chercher des offres</h3>
+    <p class="note" style="margin:0 0 10px">Chaque lien ouvre le site avec la recherche déjà faite. Quand une offre te plaît, copie son texte dans « Coller une offre » plus bas : tu obtiens la note et le brouillon de lettre.</p>
+    <div class="recherches">${SITES.map(s => `<div class="rech-site"><b>${esc(s.n)}</b><div class="rech-liens">${REQUETES.map(q => `<a class="chip lien" href="${esc(s.u(q))}" target="_blank" rel="noopener">${esc(q)}</a>`).join("")}</div></div>`).join("")}
+      <div class="rech-site"><b>Coordination SUD</b><div class="rech-liens"><a class="chip lien" href="https://www.coordinationsud.org/offres-emploi/" target="_blank" rel="noopener">Toutes les offres des ONG françaises</a></div></div>
+    </div>
+  </div>`;
+}
+
 function renderEmploi() {
   const host = $("#emploi-body"); if (!host || !profil) return;
   const min = estate.scoreMin ?? profil.score_min;
@@ -172,10 +192,7 @@ function renderEmploi() {
   }[rwInfo.etat] || "";
 
   host.innerHTML = `
-    ${rwInfo.etat === "sans_appname" ? `<div class="card waiting">
-      <strong>Il manque l'accès à ReliefWeb</strong>
-      <span class="muted">ReliefWeb (la principale source d'offres humanitaires) demande un nom d'application approuvé pour son API, gratuit. Demande-le sur la page « appname » de la documentation : <a href="https://apidoc.reliefweb.int/parameters#appname" target="_blank" rel="noopener">apidoc.reliefweb.int</a> (par exemple « foxerie-veille »). Une fois approuvé, mets-le dans <code>data/profil.json</code> (champ <code>reliefweb_appname</code>) ou donne-le à Claude. En attendant, tu peux coller des offres ci-dessous.</span>
-    </div>` : ""}
+    ${rwInfo.etat === "sans_appname" ? rechercheCard() : ""}
     <div class="card emploi-bar">
       <div class="seg" role="group" aria-label="Filtrer">${[["a_voir", "À voir"], ["interesse", "Intéressé"], ["postule", "Envoyées"], ["ecarte", "Écartées"], ["toutes", "Toutes"]].map(([k, n]) => `<button type="button" data-filtre="${k}" aria-pressed="${filtre === k}">${n}</button>`).join("")}</div>
       <label class="range"><span>Score minimum <b id="smin-v">${min}</b></span><input type="range" id="smin" min="0" max="90" step="5" value="${min}"></label>

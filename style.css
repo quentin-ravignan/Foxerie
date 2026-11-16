@@ -236,10 +236,10 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .steps li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: start; padding-bottom: 14px; position: relative; }
 .steps li:not(:last-child)::before { content: ""; position: absolute; left: 13px; top: 26px; bottom: 0; width: 2px; background: var(--line); }
 .dot { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; border: 2px solid var(--line); background: var(--surface); color: var(--muted); }
-.st-fait .dot { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.st-fait .dot { background: var(--good); border-color: var(--good); color: #fff; }
 .st-en_cours .dot { border-color: var(--ensemble); color: var(--ensemble); }
 .pill { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
-.pill.fait { background: var(--accent-soft); color: var(--accent); }
+.pill.fait { background: color-mix(in srgb, var(--good) 16%, var(--surface)); color: var(--good); }
 .pill.en_cours { background: var(--ensemble-soft); color: var(--ensemble); }
 .pill.a_faire { background: var(--bg); color: var(--muted); }
 .steps .ttl { font-weight: 500; padding-top: 3px; }
@@ -354,3 +354,36 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .baby-form input:focus { border-color: var(--accent); outline: none; }
 .btn.big { padding: 13px 16px; font-size: 16px; justify-content: center; }
 .note.pos { color: var(--good); font-weight: 600; } .note.neg { color: var(--bad); }
+
+/* Reste à payer */
+.reste { border-color: color-mix(in srgb, var(--bad) 35%, var(--line)); }
+.reste-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+.reste-tiles > div { background: var(--bg); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; }
+.reste-tiles b { font-family: var(--display); font-size: 22px; font-variant-numeric: tabular-nums; }
+.reste-tiles .tot { background: color-mix(in srgb, var(--bad) 10%, var(--surface)); }
+.reste-tiles .tot b { color: var(--bad); }
+.reste-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.reste-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); }
+@media (max-width: 560px) { .reste-tiles { grid-template-columns: 1fr; } }
+
+/* Déplacer une tâche */
+.item { flex-wrap: wrap; }
+.move { display: flex; gap: 4px; opacity: 0; transition: opacity .15s; }
+.item:hover .move, .item:focus-within .move { opacity: 1; }
+@media (hover: none) { .move { opacity: 1; width: 100%; padding-left: 30px; } }
+.mv { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; font-size: 11.5px; font-weight: 600; padding: 2px 8px; cursor: pointer; color: var(--muted); }
+.mv-louise:hover { color: var(--louise); border-color: var(--louise); }
+.mv-quentin:hover { color: var(--quentin); border-color: var(--quentin); }
+.mv-ensemble:hover { color: var(--accent); border-color: var(--accent); }
+.recup { border-color: color-mix(in srgb, var(--good) 35%, var(--line)); }
+.reste-tiles.one { grid-template-columns: 1fr; }
+.reste-tiles .tot-g { background: color-mix(in srgb, var(--good) 12%, var(--surface)); }
+.reste-tiles .tot-g b { color: var(--good); }
+
+/* Recherches prêtes */
+.recherches { display: grid; gap: 10px; }
+.rech-site { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 14px; }
+.rech-liens { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip.lien { text-decoration: none; color: var(--accent-deep); background: var(--accent-soft); }
+.chip.lien:hover { text-decoration: underline; }
+@media (max-width: 600px) { .rech-site { grid-template-columns: 1fr; gap: 4px; } }
