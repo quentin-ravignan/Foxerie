@@ -6,11 +6,13 @@
  *  - POST : ajoute ou supprime une garde. Le code doit être celui écrit dans l'onglet « Réglages », cellule B2.
  * Aucun code secret n'est écrit ici : il est dans le Sheet, saisi par Quentin.
  */
+const SHEET_ID = "1le6AtDdAbmIFyTkf5c9vGQRJ9nTxam1BkbspKhEAXHM"; // Google Sheet « Foxerie Babysitting »
+const classeur_ = () => SpreadsheetApp.openById(SHEET_ID);
 const ONGLET = "Gardes";
 const ENTETE = ["id", "date", "arrivee", "depart", "heures", "note", "declare_le"];
 
 function feuille_() {
-  const ss = SpreadsheetApp.getActive();
+  const ss = classeur_();
   let s = ss.getSheetByName(ONGLET);
   if (!s) {
     s = ss.insertSheet(ONGLET);
@@ -41,7 +43,7 @@ function doGet() {
     id: texte_(l[0]), date: texte_(l[1]), arrivee: texte_(l[2]), depart: texte_(l[3]),
     heures: Number(l[4]) || 0, note: texte_(l[5]), declare_le: texte_(l[6])
   }));
-  const tarif = Number(SpreadsheetApp.getActive().getSheetByName("Réglages").getRange("B3").getValue()) || 10;
+  const tarif = Number(classeur_().getSheetByName("Réglages").getRange("B3").getValue()) || 10;
   return sortie_({ ok: true, tarif: tarif, gardes: gardes });
 }
 
@@ -58,7 +60,7 @@ function doPost(e) {
     const s = feuille_();
     let b;
     try { b = JSON.parse(e.postData.contents); } catch (err) { return sortie_({ ok: false, erreur: "Requête illisible." }); }
-    const code = String(SpreadsheetApp.getActive().getSheetByName("Réglages").getRange("B2").getValue() || "").trim();
+    const code = String(classeur_().getSheetByName("Réglages").getRange("B2").getValue() || "").trim();
     if (!code) return sortie_({ ok: false, erreur: "Aucun code n'est encore défini dans le Sheet (onglet Réglages, cellule B2)." });
     if (String(b.code || "").trim() !== code) return sortie_({ ok: false, erreur: "Code incorrect." });
 
