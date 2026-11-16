@@ -398,7 +398,7 @@ function renderMaison(m) {
   // Reste à payer : lignes EC Rénov à faire + lignes du suivi pas encore payées
   const aPayer = [
     ...(ec.a_payer || []).map(x => ({ libelle: "EC Rénov · " + x.libelle, mode: x.mode, montant: x.montant })),
-    ...suivi.filter(s => !s.fait).map(s => ({ libelle: s.libelle, mode: /esp|cash/i.test(s.paiement || "") ? "especes" : (/vir/i.test(s.paiement || "") ? "virement" : "carte"), montant: s.montant, qui: s.qui }))
+    ...suivi.filter(s => !s.fait && s.montant > 0).map(s => ({ libelle: s.libelle, mode: /esp|cash/i.test(s.paiement || "") ? "especes" : (/vir/i.test(s.paiement || "") ? "virement" : "carte"), montant: s.montant, qui: s.qui }))
   ];
   const ecResteEsp = ec.prevu ? Math.max(0, ec.prevu.especes - ec.paye.especes) : 0;
   const ecResteVir = ec.prevu ? Math.max(0, ec.prevu.factures - ec.paye.factures) : 0;
