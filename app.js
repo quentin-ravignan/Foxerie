@@ -66,8 +66,10 @@ function heroStats(fin, m) {
 const PEOPLE = [
   { k: "louise", n: "Louise", ph: "Ajouter pour Louise…" },
   { k: "quentin", n: "Quentin", ph: "Ajouter pour Quentin…" },
-  { k: "ensemble", n: "À deux", ph: "Ajouter pour vous deux…" }
+  { k: "ensemble", n: "À deux", ph: "Ajouter pour vous deux…" },
+  { k: "ecrenov", n: "EC Rénov", ph: "Ajouter pour l'entreprise…" }
 ];
+const OUTIL = `<span class="av-tool" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3.6 17.1a1.5 1.5 0 0 0 2.1 2.1l5.7-5.7a4 4 0 0 0 5.1-5.4l-2.5 2.5-2.1-.6-.6-2.1z" fill="currentColor"/></svg></span>`;
 const TKEY = "foxerie.taches.v1";
 let baseTodos = [], maisonData = null;
 let local = store.get(TKEY, { ajouts: [], faits: {}, supprimes: {} });
@@ -82,7 +84,7 @@ function saveLocal() { store.set(TKEY, local); renderTodos(); heroStats(fin, mai
 function buildTodoCols() {
   $("#todo-cols").innerHTML = PEOPLE.map(p => `
     <div class="col col-${p.k}">
-      <div class="col-head"><div class="who">${p.k === "ensemble" ? `<span class="av-duo">${avatar("louise")}${avatar("quentin")}</span>` : avatar(p.k)}<h3>${p.n}</h3></div><span class="count" id="cnt-${p.k}">0</span></div>
+      <div class="col-head"><div class="who">${p.k === "ensemble" ? `<span class="av-duo">${avatar("louise")}${avatar("quentin")}</span>` : p.k === "ecrenov" ? OUTIL : avatar(p.k)}<h3>${p.n}</h3></div><span class="count" id="cnt-${p.k}">0</span></div>
       <form class="add" data-who="${p.k}" autocomplete="off">
         <input id="add-${p.k}" name="t" placeholder="${p.ph}" aria-label="${p.ph}" maxlength="200">
         <button type="submit" aria-label="Ajouter">+</button>
@@ -99,7 +101,7 @@ function itemHtml(t) {
   return `<li class="item${t.done ? " done" : ""}">
     <input type="checkbox" id="cb-${esc(t.id)}" data-id="${esc(t.id)}"${t.done ? " checked" : ""}>
     <label class="t" for="cb-${esc(t.id)}">${esc(t.texte)}</label>
-    <span class="move" role="group" aria-label="Déplacer « ${esc(t.texte)} »">${PEOPLE.filter(p => p.k !== t.qui).map(p => `<button type="button" data-move="${esc(t.id)}" data-to="${p.k}" class="mv mv-${p.k}" title="Déplacer vers ${p.n}">→ ${p.k === "ensemble" ? "À deux" : p.n}</button>`).join("")}</span>
+    <span class="move" role="group" aria-label="Déplacer « ${esc(t.texte)} »">${PEOPLE.filter(p => p.k !== t.qui).map(p => `<button type="button" data-move="${esc(t.id)}" data-to="${p.k}" class="mv mv-${p.k}" title="Déplacer vers ${p.n}">→ ${p.n}</button>`).join("")}</span>
     <button type="button" class="del" data-del="${esc(t.id)}" aria-label="Supprimer « ${esc(t.texte)} »">×</button>
   </li>`;
 }

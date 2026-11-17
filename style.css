@@ -130,7 +130,8 @@ main { padding-block: 24px 40px; }
 .empty { color: var(--muted); font-size: 14px; padding: 8px 0; }
 
 /* Tâches */
-.cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 1100px) { .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 820px) { .cols { grid-template-columns: 1fr; } }
 .col { --c: var(--accent); --cs: var(--accent-soft); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
 .col-louise { --c: var(--louise); --cs: var(--louise-soft); }
@@ -387,3 +388,8 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .chip.lien { text-decoration: none; color: var(--accent-deep); background: var(--accent-soft); }
 .chip.lien:hover { text-decoration: underline; }
 @media (max-width: 600px) { .rech-site { grid-template-columns: 1fr; gap: 4px; } }
+
+/* Colonne EC Rénov */
+.col-ecrenov { --c: var(--good); --cs: color-mix(in srgb, var(--good) 14%, var(--surface)); }
+.av-tool { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--good); color: #fff; flex: none; }
+.mv-ecrenov:hover { color: var(--good); border-color: var(--good); }

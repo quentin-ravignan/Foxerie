@@ -1,15 +1,104 @@
 {
-  "taches": [
-    { "id": "t1", "texte": "Résilier l'ancienne assurance habitation", "qui": "quentin" },
-    { "id": "t2", "texte": "Changer d'adresse (impôts, banque, CAF)", "qui": "louise" },
-    { "id": "t3", "texte": "Ouvrir les contrats électricité et eau", "qui": "ensemble" },
-    { "id": "t4", "texte": "Commander le canapé convertible de la chambre d'amis", "qui": "ensemble" },
-    { "id": "t5", "texte": "Plaque en bois de la cuisine", "qui": "ensemble" },
-    { "id": "t6", "texte": "Installer l'évier de la cave", "qui": "ensemble" },
-    { "id": "t7", "texte": "Installer le système d'alarme", "qui": "ensemble" },
-    { "id": "t8", "texte": "Installer la chatière", "qui": "ensemble" },
-    { "id": "t9", "texte": "Installer le programmateur du chauffage", "qui": "ensemble" },
-    { "id": "t10", "texte": "Installer les tringles à rideaux", "qui": "ensemble" },
-    { "id": "t11", "texte": "Installer le rideau de la chambre d'enfant", "qui": "ensemble" }
-  ]
+ "taches": [
+  {
+   "id": "t1",
+   "texte": "Résilier l'ancienne assurance habitation",
+   "qui": "quentin"
+  },
+  {
+   "id": "t2",
+   "texte": "Changer d'adresse (impôts, banque, CAF)",
+   "qui": "louise"
+  },
+  {
+   "id": "t3",
+   "texte": "Ouvrir les contrats électricité et eau",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t4",
+   "texte": "Commander le canapé convertible de la chambre d'amis",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t5",
+   "texte": "Plaque en bois de la cuisine",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t6",
+   "texte": "Installer l'évier de la cave",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t7",
+   "texte": "Installer le système d'alarme",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t8",
+   "texte": "Installer la chatière",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t9",
+   "texte": "Installer le programmateur du chauffage",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t10",
+   "texte": "Installer les tringles à rideaux",
+   "qui": "ensemble"
+  },
+  {
+   "id": "t11",
+   "texte": "Installer le rideau de la chambre d'enfant",
+   "qui": "ensemble"
+  },
+  {
+   "id": "ec1",
+   "texte": "Nettoyer le carrelage",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec2",
+   "texte": "Changer le parquet",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec3",
+   "texte": "Changer le bas des caissons de cuisine pour l'alignement",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec4",
+   "texte": "Installer les poignées",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec5",
+   "texte": "Installer les lumières du salon",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec6",
+   "texte": "Aligner les lumières de la cuisine",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec7",
+   "texte": "Réparer le siphon de la cuisine",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec8",
+   "texte": "Régler le problème d'écoulement des eaux usées",
+   "qui": "ecrenov"
+  },
+  {
+   "id": "ec9",
+   "texte": "Changer la vitre de la salle de bain",
+   "qui": "ecrenov"
+  }
+ ]
 }
