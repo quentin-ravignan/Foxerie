@@ -247,17 +247,19 @@ function renderBudget() {
     const vL = sum(vers.filter(v => v.qui === "louise"), v => v.montant);
     const vQ = sum(vers.filter(v => v.qui === "quentin"), v => v.montant);
     const aides = sum(tx.filter(isRevenu), o => o.montant);
-    const entrees = vL + vQ + aides;
+    const prets = sum(tx.filter(o => o.type === "pret"), o => o.montant);
+    const entrees = vL + vQ + aides + prets;
     const reste = entrees - totalDep;
     kpis = [
-      { l: "Entrées " + per, v: fmt(entrees), d: `Versements nets et aides` },
+      { l: "Entrées " + per, v: fmt(entrees), d: prets ? `Dont ${fmt(prets)} de prêt PTZ` : `Versements nets et aides` },
       { l: "Dépenses communes", v: fmt(totalDep), d: `${deps.length} opération${deps.length > 1 ? "s" : ""}` },
       { l: "Solde de la période", v: fmt(reste), c: reste >= 0 ? "pos" : "neg", d: entrees > 0 ? pct.format(totalDep / entrees) + " des entrées dépensées" : "—" }
     ];
     const parts = [
       { k: "q", n: "Quentin", v: vQ, cls: "who-q" },
       { k: "l", n: "Louise", v: vL, cls: "who-l" },
-      { k: "a", n: "CAF, CPAM, mutuelle", v: aides, cls: "who-a" }
+      { k: "a", n: "CAF, CPAM, mutuelle", v: aides, cls: "who-a" },
+      ...(prets ? [{ k: "p", n: "Prêt PTZ", v: prets, cls: "who-p" }] : [])
     ];
     const pos = parts.filter(p => p.v > 0), tot = sum(pos, p => p.v) || 1;
     versCard = `
@@ -291,6 +293,7 @@ function renderBudget() {
   const typeChip = o => {
     if (o.type === "versement") return o.qui === "louise" ? "Versement Louise" : "Versement Quentin";
     if (o.type === "interne") return o.categorie || "Interne";
+    if (o.type === "pret") return "Prêt PTZ";
     return o.categorie || "Divers";
   };
   const shown = isYear ? deps.slice().sort((a, b) => a.montant - b.montant).slice(0, 40) : tx.slice().sort((a, b) => b.date.localeCompare(a.date));

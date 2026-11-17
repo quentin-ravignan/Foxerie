@@ -6,7 +6,7 @@
   {"id": "bourso-foxerie", "banque": "Boursorama", "titulaire": "foxerie", "solde": 190.97, "date_solde": "2026-10-30", "releves": {"du": "2026-01-01", "au": "2026-10-30"}},
   {"id": "sg-louise", "banque": "Société Générale", "titulaire": "louise", "solde": null, "date_solde": null, "releves": null},
   {"id": "sg-quentin", "banque": "Société Générale", "titulaire": "quentin", "solde": -100.0, "date_solde": "2026-11-07", "releves": {"du": "2026-07-03", "au": "2026-11-07"}},
-  {"id": "sg-foxerie", "banque": "Société Générale", "titulaire": "foxerie", "solde": 1716.85, "date_solde": "2026-10-07", "releves": {"du": "2026-07-30", "au": "2026-10-07"}}
+  {"id": "sg-foxerie", "banque": "Société Générale", "titulaire": "foxerie", "solde": 13472.93, "date_solde": "2026-11-17", "releves": {"du": "2026-07-30", "au": "2026-10-07"}, "solde_releve": 1716.85, "note_solde": "Dernier relevé (7 oct.) + déblocages PTZ ; les autres mouvements depuis le 7 oct. ne sont pas encore connus"}
  ],
  "categories": ["Achat maison", "Aides & remboursements", "Assurances", "Courses", "Crédit maison", "Crédits conso", "Divers", "Enfants & garde", "Entre comptes", "Entre nous", "Espèces", "Frais avancés", "Frais bancaires & divers", "Impôts", "Internet & téléphone", "Loisirs & abonnements", "Loyer", "Prêt familial", "Remboursements & ventes", "Restaurants & cafés", "Salaire", "Santé", "Shopping", "Transport", "Travaux & équipement", "Versement", "Virements divers", "Voyages & vacances", "Énergie", "Épargne"],
  "operations": [
@@ -2106,6 +2106,9 @@
   {"date": "2026-11-05", "compte": "sg-quentin", "libelle": "", "montant": -49.38, "categorie": "Assurances"},
   {"date": "2026-11-06", "compte": "sg-quentin", "libelle": "Virement reçu", "montant": 511.25, "categorie": "Virements divers"},
   {"date": "2026-11-06", "compte": "sg-quentin", "libelle": "Wero émis", "montant": -15.0, "categorie": "Virements divers"},
-  {"date": "2026-11-07", "compte": "sg-quentin", "libelle": "Virement émis", "montant": -85.0, "categorie": "Santé"}
+  {"date": "2026-11-07", "compte": "sg-quentin", "libelle": "Virement émis", "montant": -85.0, "categorie": "Santé"},
+  {"date": "2026-11-17", "compte": "sg-foxerie", "libelle": "Déblocage prêt PTZ", "montant": 990, "categorie": "Prêt PTZ", "type": "pret"},
+  {"date": "2026-11-17", "compte": "sg-foxerie", "libelle": "Déblocage prêt PTZ", "montant": 5018.58, "categorie": "Prêt PTZ", "type": "pret"},
+  {"date": "2026-11-17", "compte": "sg-foxerie", "libelle": "Déblocage prêt PTZ", "montant": 5747.5, "categorie": "Prêt PTZ", "type": "pret"}
  ]
 }
