@@ -576,7 +576,7 @@
    "factures": 21418
   },
   "paye": {
-   "especes": 8700,
+   "especes": 7400,
    "factures": 21418
   },
   "factures": [
@@ -617,19 +617,21 @@
     "note": "3 retraits"
    },
    {
-    "montant": 1300
+    "montant": 1300,
+    "note": "Fin de travaux, pas encore payé",
+    "paye": false
    }
   ],
   "a_payer": [
    {
+    "libelle": "Fin de travaux",
+    "mode": "especes",
+    "montant": 1300
+   },
+   {
     "libelle": "Installation machine à laver",
     "mode": "especes",
     "montant": 550
-   },
-   {
-    "libelle": "Installation dérivation",
-    "mode": "especes",
-    "montant": null
    }
   ]
  },
