@@ -424,8 +424,8 @@ function renderMaison(m) {
   const recup = m.a_recuperer || [];
   const recupCard = recup.length ? `<div class="card recup">
       <h3>À récupérer</h3>
-      <div class="reste-tiles one"><div class="tot-g"><span class="label">Total à récupérer</span><b>${fmt(sum(recup, x => x.montant), true)}</b></div></div>
-      <ul class="reste-list">${recup.map(x => `<li><span>${esc(x.libelle)}</span><span></span><b class="num">${fmt(x.montant, true)}</b></li>`).join("")}</ul>
+      <div class="reste-tiles"><div><span class="label">Déjà récupéré</span><b>${fmt(sum(recup, x => x.recupere || 0), true)}</b></div><div class="tot-g"><span class="label">Encore à récupérer</span><b>${fmt(sum(recup, x => x.montant - (x.recupere || 0)), true)}</b></div></div>
+      <ul class="reste-list">${recup.map(x => `<li><span>${esc(x.libelle)}${x.recupere ? ` <small class="muted">(${fmt(x.recupere, true)} récupérés sur ${fmt(x.montant)})</small>` : ""}</span><span></span><b class="num">${x.recupere >= x.montant ? `<span class="pos">récupéré</span>` : fmt(x.montant - (x.recupere || 0), true)}</b></li>`).join("")}</ul>
     </div>` : "";
 
   $("#maison-body").innerHTML = `

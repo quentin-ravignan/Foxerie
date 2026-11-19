@@ -378,6 +378,7 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .mv-ensemble:hover { color: var(--accent); border-color: var(--accent); }
 .recup { border-color: color-mix(in srgb, var(--good) 35%, var(--line)); }
 .reste-tiles.one { grid-template-columns: 1fr; }
+.recup .reste-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .reste-tiles .tot-g { background: color-mix(in srgb, var(--good) 12%, var(--surface)); }
 .reste-tiles .tot-g b { color: var(--good); }
 

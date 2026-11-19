@@ -576,7 +576,7 @@
    "factures": 21418
   },
   "paye": {
-   "especes": 7400,
+   "especes": 9250,
    "factures": 21418
   },
   "factures": [
@@ -618,27 +618,26 @@
    },
    {
     "montant": 1300,
-    "note": "Fin de travaux, pas encore payé",
-    "paye": false
-   }
-  ],
-  "a_payer": [
-   {
-    "libelle": "Fin de travaux",
-    "mode": "especes",
-    "montant": 1300
+    "note": "Fin de travaux"
    },
    {
-    "libelle": "Installation machine à laver",
-    "mode": "especes",
-    "montant": 550
+    "montant": 550,
+    "note": "Installation machine à laver"
    }
-  ]
+  ],
+  "a_payer": [],
+  "dernier_paiement": {
+   "date": "2026-11-19",
+   "montant": 1850,
+   "note": "1 800 € retirés + 50 € qui restaient, donnés à EC Rénov"
+  }
  },
  "a_recuperer": [
   {
    "libelle": "Sayada",
-   "montant": 3000
+   "montant": 3000,
+   "recupere": 1993.33,
+   "date": "2026-11-19"
   },
   {
    "libelle": "Frigo Creative",
