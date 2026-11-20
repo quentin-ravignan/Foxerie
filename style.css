@@ -394,3 +394,17 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .col-ecrenov { --c: var(--good); --cs: color-mix(in srgb, var(--good) 14%, var(--surface)); }
 .av-tool { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--good); color: #fff; flex: none; }
 .mv-ecrenov:hover { color: var(--good); border-color: var(--good); }
+
+/* Suivi des dépenses : tri et filtres */
+.sv-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.sv-head h3 { margin: 0; }
+.tx.sv { min-width: 860px; }
+.sv-sort { border: 0; background: none; padding: 0; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; font-weight: 600; cursor: pointer; }
+.sv-sort:hover { color: var(--accent-deep); }
+.sv-ar { color: var(--accent); }
+.sv-filtres th { padding: 4px 6px 8px; border-bottom: 1px solid var(--line); text-transform: none; letter-spacing: 0; }
+.sv-filtres input, .sv-filtres select { width: 100%; min-width: 0; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 8px; padding: 5px 7px; font: 13px var(--body); }
+.sv-filtres input[type=date] { display: block; margin-bottom: 4px; }
+.tx tfoot .tot td { border-top: 2px solid var(--line); }
+.tx tfoot .sous td { font-size: 13px; color: var(--muted); border-bottom: 0; }
+.sv-qui { display: inline-flex; align-items: center; gap: 2px; margin-right: 16px; }

@@ -429,6 +429,7 @@ function renderMaison(m) {
     </div>` : "";
 
   $("#maison-body").innerHTML = `
+    <div class="card" id="suivi-card"></div>
     <div class="kpis">
       <div class="card kpi"><div class="label">Coût total du projet</div><div class="v">${fmt(totD)}</div><div class="d">${fmt(sansTravaux)} sans les travaux</div></div>
       <div class="card kpi"><div class="label">Apport personnel</div><div class="v">${fmt(apport)}</div><div class="d">${pct.format(apport / totR)} du financement</div></div>
@@ -503,20 +504,81 @@ function renderMaison(m) {
       </div>
     </div>
     ${suivi.length ? `<div class="card">
-      <h3>Suivi des dépenses de la maison</h3>
+      <h3>Dépenses par type</h3>
       <div class="pie-wrap-row">${pie(Object.entries(parType).map(([t, v], i) => ({ l: TYPE_LAB[t] || t, v, c: `var(--p${[1, 6, 3, 4][i] || 5})` })), "Total")}</div>
-      <div class="scroll"><table class="tx">
-        <thead><tr><th>Date</th><th>Dépense</th><th>Type</th><th>Payé par</th><th class="r">Montant</th></tr></thead>
-        <tbody>${suivi.slice().sort((a, b) => (b.date || "").localeCompare(a.date || "")).map(s => `
-          <tr><td class="num">${s.date ? new Date(s.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : "—"}</td>
-          <td>${esc(s.libelle)}${s.fait ? "" : ` <span class="pill a_faire">à payer</span>`}</td>
-          <td><span class="chip">${esc(TYPE_LAB[s.type] || s.type)}</span></td>
-          <td><i class="dotw w-${s.qui}"></i>${esc(QUI_LAB[s.qui] || s.qui)}</td>
-          <td class="r">${fmt(s.montant, true)}</td></tr>`).join("")}
-        </tbody>
-      </table></div>
-      <p class="note">Repris du tableur « Suivi dépenses ». Les lignes EC Rénov sont l'argent mis de côté pour payer l'entreprise (virements vers le compte SG, espèces).</p>
+      <p class="note">Les lignes EC Rénov sont l'argent mis de côté pour payer l'entreprise (virements vers le compte SG, espèces).</p>
     </div>` : ""}`;
+  setupSuivi(suivi, TYPE_LAB, QUI_LAB);
+}
+
+/* ---------- Suivi des dépenses : tri, filtres, totaux ---------- */
+const SKEY = "foxerie.suivi.v1";
+let sv = store.get(SKEY, { tri: "date", sens: -1, f: {} });
+let svData = [], svLab = {};
+const modeDe = s => /cash|esp/i.test(s.paiement || "") ? "Espèces" : /vir/i.test(s.paiement || "") ? "Virement" : /cb|carte/i.test(s.paiement || "") ? "Carte" : "Non précisé";
+const SV_COLS = [
+  { k: "date", n: "Date", get: s => s.date || "" },
+  { k: "libelle", n: "Dépense", get: s => s.libelle.toLowerCase() },
+  { k: "type", n: "Type", get: s => svLab.type[s.type] || s.type },
+  { k: "mode", n: "Paiement", get: modeDe },
+  { k: "qui", n: "Payé par", get: s => svLab.qui[s.qui] || s.qui },
+  { k: "statut", n: "Statut", get: s => s.fait ? "Payé" : "À payer" },
+  { k: "montant", n: "Montant", get: s => s.montant, r: true }
+];
+function setupSuivi(suivi, TYPE_LAB, QUI_LAB) {
+  const box = $("#suivi-card"); if (!box) return;
+  svData = suivi; svLab = { type: TYPE_LAB, qui: QUI_LAB };
+  if (!suivi.length) { box.hidden = true; return; }
+  const opts = k => [...new Set(suivi.map(s => SV_COLS.find(c => c.k === k).get(s)))].sort();
+  const sel = k => `<select id="sf-${k}" data-f="${k}" aria-label="Filtrer ${SV_COLS.find(c => c.k === k).n}"><option value="">Tous</option>${opts(k).map(v => `<option${sv.f[k] === v ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`;
+  box.innerHTML = `
+    <div class="sv-head"><h3>Suivi des dépenses de la maison</h3><button type="button" class="btn ghost" id="sv-reset">Effacer les filtres</button></div>
+    <div class="scroll"><table class="tx sv">
+      <thead>
+        <tr>${SV_COLS.map(c => `<th class="${c.r ? "r" : ""}"><button type="button" class="sv-sort" data-tri="${c.k}">${c.n}<span class="sv-ar" id="ar-${c.k}"></span></button></th>`).join("")}</tr>
+        <tr class="sv-filtres">
+          <th><input type="date" id="sf-du" data-f="du" value="${esc(sv.f.du || "")}" aria-label="Depuis le"><input type="date" id="sf-au" data-f="au" value="${esc(sv.f.au || "")}" aria-label="Jusqu'au"></th>
+          <th><input type="search" id="sf-libelle" data-f="libelle" placeholder="Rechercher…" value="${esc(sv.f.libelle || "")}" aria-label="Rechercher une dépense"></th>
+          <th>${sel("type")}</th><th>${sel("mode")}</th><th>${sel("qui")}</th><th>${sel("statut")}</th>
+          <th><input type="number" id="sf-min" data-f="min" placeholder="min €" value="${esc(sv.f.min || "")}" aria-label="Montant minimum"></th>
+        </tr>
+      </thead>
+      <tbody id="sv-body"></tbody>
+      <tfoot id="sv-foot"></tfoot>
+    </table></div>
+    <p class="note">Repris du tableur « Suivi dépenses ». Clique sur un titre de colonne pour trier ; les filtres restent sur cet appareil.</p>`;
+  box.oninput = e => { const k = e.target.dataset.f; if (!k) return; sv.f[k] = e.target.value; store.set(SKEY, sv); rendreSuivi(); };
+  box.onclick = e => {
+    const b = e.target.closest("[data-tri]");
+    if (b) { const k = b.dataset.tri; sv.sens = sv.tri === k ? -sv.sens : (k === "date" || k === "montant" ? -1 : 1); sv.tri = k; store.set(SKEY, sv); rendreSuivi(); }
+    if (e.target.id === "sv-reset") { sv.f = {}; store.set(SKEY, sv); setupSuivi(svData, svLab.type, svLab.qui); }
+  };
+  rendreSuivi();
+}
+function rendreSuivi() {
+  const f = sv.f, col = k => SV_COLS.find(c => c.k === k);
+  let rows = svData.filter(s =>
+    (!f.du || (s.date && s.date >= f.du)) && (!f.au || (s.date && s.date <= f.au)) &&
+    (!f.libelle || s.libelle.toLowerCase().includes(f.libelle.toLowerCase())) &&
+    ["type", "mode", "qui", "statut"].every(k => !f[k] || col(k).get(s) === f[k]) &&
+    (!f.min || s.montant >= +f.min));
+  const g = col(sv.tri).get;
+  rows.sort((a, b) => { const x = g(a), y = g(b); return (x < y ? -1 : x > y ? 1 : 0) * sv.sens; });
+  SV_COLS.forEach(c => { const el = $("#ar-" + c.k); if (el) el.textContent = sv.tri === c.k ? (sv.sens > 0 ? " ▲" : " ▼") : ""; });
+  $("#sv-body").innerHTML = rows.map(s => `
+    <tr><td class="num">${s.date ? new Date(s.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" }) : "—"}</td>
+    <td>${esc(s.libelle)}</td>
+    <td><span class="chip">${esc(col("type").get(s))}</span></td>
+    <td>${esc(modeDe(s))}</td>
+    <td><i class="dotw w-${s.qui}"></i>${esc(col("qui").get(s))}</td>
+    <td>${s.fait ? `<span class="pill fait">Payé</span>` : `<span class="pill a_faire">À payer</span>`}</td>
+    <td class="r">${fmt(s.montant, true)}</td></tr>`).join("") || `<tr><td colspan="7" class="empty">Aucune dépense avec ces filtres.</td></tr>`;
+  const parQui = {};
+  rows.forEach(s => { parQui[s.qui] = (parQui[s.qui] || 0) + s.montant; });
+  const apayer = sum(rows.filter(s => !s.fait), s => s.montant);
+  $("#sv-foot").innerHTML = `
+    <tr class="tot"><td colspan="6"><b>Total · ${rows.length} ligne${rows.length > 1 ? "s" : ""}</b></td><td class="r"><b>${fmt(sum(rows, s => s.montant), true)}</b></td></tr>
+    <tr class="sous"><td colspan="6">${Object.entries(parQui).map(([k, v]) => `<span class="sv-qui"><i class="dotw w-${k}"></i>${esc(svLab.qui[k] || k)} <b class="num">${fmt(v, true)}</b></span>`).join("")}</td><td class="r">${apayer ? `<span class="neg">dont ${fmt(apayer, true)} à payer</span>` : ""}</td></tr>`;
 }
 
 /* ---------- Démarrage ---------- */
