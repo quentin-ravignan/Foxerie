@@ -573,7 +573,7 @@ function rendreSuivi() {
     <td class="r">${fmt(s.montant, true)}</td></tr>`).join("") || `<tr><td colspan="7" class="empty">Aucune dépense avec ces filtres.</td></tr>`;
   const parQui = {};
   rows.forEach(s => { parQui[s.qui] = (parQui[s.qui] || 0) + s.montant; });
-  const apayer = sum(rows.filter(s => !s.fait), s => s.montant);
+  const apayer = sum(rows.filter(s => !s.fait && s.montant > 0), s => s.montant);
   $("#sv-foot").innerHTML = `
     <tr class="tot"><td colspan="6"><b>Total · ${rows.length} ligne${rows.length > 1 ? "s" : ""}</b></td><td class="r"><b>${fmt(sum(rows, s => s.montant), true)}</b></td></tr>
     <tr class="sous"><td colspan="6">${Object.entries(parQui).map(([k, v]) => `<span class="sv-qui"><i class="dotw w-${k}"></i>${esc(svLab.qui[k] || k)} <b class="num">${fmt(v, true)}</b></span>`).join("")}</td><td class="r">${apayer ? `<span class="neg">dont ${fmt(apayer, true)} à payer</span>` : ""}</td></tr>`;
