@@ -572,8 +572,8 @@
  ],
  "ec_renov": {
   "prevu": {
-   "especes": 9250,
-   "factures": 21418
+   "especes": 10000,
+   "factures": 26088
   },
   "paye": {
    "especes": 9250,
@@ -625,23 +625,42 @@
     "note": "Installation machine à laver"
    }
   ],
-  "a_payer": [],
+  "a_payer": [
+   {
+    "libelle": "Correction de l'évacuation",
+    "mode": "especes",
+    "montant": 750
+   },
+   {
+    "libelle": "Dernière facture",
+    "mode": "virement",
+    "montant": 4670
+   }
+  ],
   "dernier_paiement": {
    "date": "2026-11-19",
    "montant": 1850,
-   "note": "1 800 € retirés + 50 € qui restaient, donnés à EC Rénov"
+   "note": "1 800 € retirés du compte Foxerie SG + 50 € qui restaient"
   }
  },
  "a_recuperer": [
   {
    "libelle": "Sayada",
-   "montant": 3000,
-   "recupere": 1993.33,
+   "montant": 2000,
+   "recupere": 2000,
    "date": "2026-11-19"
   },
   {
    "libelle": "Frigo Creative",
    "montant": 870
+  },
+  {
+   "libelle": "SNCF",
+   "montant": 200
+  },
+  {
+   "libelle": "Notaire",
+   "montant": 350
   }
  ]
 }

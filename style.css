@@ -411,3 +411,5 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 
 .view > * { min-width: 0; }
 #maison-body { display: grid; gap: 20px; }
+.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .cards3 { grid-template-columns: 1fr; } }

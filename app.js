@@ -430,12 +430,12 @@ function renderMaison(m) {
 
   $("#maison-body").innerHTML = `
     <div class="card" id="suivi-card"></div>
+    <div class="grid2">${resteCard}${recupCard}</div>
     <div class="kpis">
       <div class="card kpi"><div class="label">Coût total du projet</div><div class="v">${fmt(totD)}</div><div class="d">${fmt(sansTravaux)} sans les travaux</div></div>
       <div class="card kpi"><div class="label">Apport personnel</div><div class="v">${fmt(apport)}</div><div class="d">${pct.format(apport / totR)} du financement</div></div>
       <div class="card kpi"><div class="label">Prêt ${esc(pret.banque || "")}</div><div class="v">${fmt(pret.montant)}</div><div class="d">${pct.format((pret.montant || 0) / totR)} du financement · ${pct.format((pret.montant || 0) / (prix || 1))} du prix</div></div>
     </div>
-    <div class="grid2">${resteCard}${recupCard}</div>
 
     <div class="grid2">
       <div class="card">
@@ -449,18 +449,7 @@ function renderMaison(m) {
       </div>
     </div>
 
-    <div class="grid2">
-      <div class="card">
-        <h3>Avancement</h3>
-        <ol class="steps">${etapes.map((e, i) => `
-          <li class="st-${esc(e.statut)}">
-            <span class="dot">${e.statut === "fait" ? "✓" : i + 1}</span>
-            <div><div class="ttl">${esc(e.titre)}</div>${e.date ? `<div class="dt">${new Date(e.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</div>` : ""}${e.note ? `<div class="dt">${esc(e.note)}</div>` : ""}</div>
-            <span class="pill ${esc(e.statut)}">${STATUT[e.statut] || esc(e.statut)}</span>
-          </li>`).join("")}
-        </ol>
-      </div>
-      <div class="stack">
+    <div class="cards3">
         <div class="card">
           <h3>Apports : prévu et payé</h3>
           ${pie(Object.entries(paye).map(([k, v]) => ({ l: "Payé par " + (QUI_LAB[k] || k), v, c: PIE_C[k] })), "Payé", true)}
@@ -501,13 +490,22 @@ function renderMaison(m) {
           <p class="note">Mis de côté pour EC Rénov : ${fmt(ecFinance)}, soit ${fmt(ecFinance - ecPaye)} pas encore dépensés. Reste à payer à EC Rénov : ${fmt(ecPrevu - ecPaye, true)}.</p>
           ${(ec.factures || []).length ? `<table class="tx" style="margin-top:8px"><thead><tr><th>Facture EC Rénov</th><th class="r">Montant</th></tr></thead><tbody>${ec.factures.map(f => `<tr><td>${esc(f.ref)}<small class="sub-d">${esc(f.note || "")}</small></td><td class="r">${fmt(f.montant, true)}</td></tr>`).join("")}</tbody></table>` : ""}
         </div>
-      </div>
     </div>
     ${suivi.length ? `<div class="card">
       <h3>Dépenses par type</h3>
       <div class="pie-wrap-row">${pie(Object.entries(parType).map(([t, v], i) => ({ l: TYPE_LAB[t] || t, v, c: `var(--p${[1, 6, 3, 4][i] || 5})` })), "Total")}</div>
       <p class="note">Les lignes EC Rénov sont l'argent mis de côté pour payer l'entreprise (virements vers le compte SG, espèces).</p>
-    </div>` : ""}`;
+    </div>` : ""}
+      <div class="card">
+        <h3>Avancement</h3>
+        <ol class="steps">${etapes.map((e, i) => `
+          <li class="st-${esc(e.statut)}">
+            <span class="dot">${e.statut === "fait" ? "✓" : i + 1}</span>
+            <div><div class="ttl">${esc(e.titre)}</div>${e.date ? `<div class="dt">${new Date(e.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</div>` : ""}${e.note ? `<div class="dt">${esc(e.note)}</div>` : ""}</div>
+            <span class="pill ${esc(e.statut)}">${STATUT[e.statut] || esc(e.statut)}</span>
+          </li>`).join("")}
+        </ol>
+      </div>`;
   setupSuivi(suivi, TYPE_LAB, QUI_LAB);
 }
 
