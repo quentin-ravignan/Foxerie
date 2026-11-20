@@ -408,3 +408,6 @@ table.tx { width: 100%; border-collapse: collapse; font-size: 14px; }
 .tx tfoot .tot td { border-top: 2px solid var(--line); }
 .tx tfoot .sous td { font-size: 13px; color: var(--muted); border-bottom: 0; }
 .sv-qui { display: inline-flex; align-items: center; gap: 2px; margin-right: 16px; }
+
+.view > * { min-width: 0; }
+#maison-body { display: grid; gap: 20px; }
