@@ -133,7 +133,7 @@
    "libelle": "Cartons déménagement",
    "type": "Consommables",
    "paiement": null,
-   "qui": "foxerie",
+   "qui": "foxerie-bourso",
    "montant": 85.68,
    "fait": true
   },
@@ -457,7 +457,7 @@
    "libelle": "Espèces pour EC Rénov",
    "type": "EC Renov",
    "paiement": "Espèces",
-   "qui": "foxerie",
+   "qui": "foxerie-bourso",
    "montant": 300.0,
    "fait": true
   },
@@ -466,7 +466,7 @@
    "libelle": "Espèces pour EC Rénov",
    "type": "EC Renov",
    "paiement": "Espèces",
-   "qui": "foxerie",
+   "qui": "foxerie-bourso",
    "montant": 300.0,
    "fait": true
   },
@@ -475,7 +475,7 @@
    "libelle": "Espèces pour EC Rénov",
    "type": "EC Renov",
    "paiement": "Espèces",
-   "qui": "foxerie",
+   "qui": "foxerie-bourso",
    "montant": 50.0,
    "fait": true
   },
@@ -502,7 +502,7 @@
    "libelle": "Espèces pour EC Rénov",
    "type": "EC Renov",
    "paiement": "Espèces",
-   "qui": "foxerie",
+   "qui": "foxerie-sg",
    "montant": 300.0,
    "fait": true
   },
@@ -568,6 +568,15 @@
    "qui": "louise",
    "montant": 481.0,
    "fait": false
+  },
+  {
+   "date": "2026-11-19",
+   "libelle": "Espèces pour EC Rénov (fin de travaux, machine à laver)",
+   "type": "EC Renov",
+   "paiement": "Espèces",
+   "qui": "foxerie-sg",
+   "montant": 1800,
+   "fait": true
   }
  ],
  "ec_renov": {

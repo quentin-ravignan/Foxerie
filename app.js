@@ -342,7 +342,7 @@ function renderBudget() {
 }
 
 /* ---------- Maison ---------- */
-const PIE_C = { louise: "var(--louise)", quentin: "var(--quentin)", pret: "var(--pret)", foxerie: "var(--accent)" };
+const PIE_C = { louise: "var(--louise)", quentin: "var(--quentin)", pret: "var(--pret)", foxerie: "var(--p3)", "foxerie-sg": "var(--sg)", "foxerie-bourso": "var(--bourso)" };
 /* Camembert (anneau) en SVG : chaque part est un arc de cercle de circonférence 100. */
 function pie(items, centre, small) {
   items = items.filter(x => x.v > 0);
@@ -383,7 +383,7 @@ function renderMaison(m) {
   const achats = parType["Travaux"] || 0;
   const travauxFaits = ecPaye + achats;
   const TYPE_LAB = { "EC Renov": "EC Rénov (fonds)", "Travaux": "Achats travaux", "Achat maison": "Achat maison", "Consommables": "Consommables" };
-  const QUI_LAB = { louise: "Louise", quentin: "Quentin", foxerie: "Foxerie" };
+  const QUI_LAB = { louise: "Louise", quentin: "Quentin", "foxerie-sg": "Foxerie SG", "foxerie-bourso": "Foxerie Bourso", foxerie: "Foxerie (compte à préciser)" };
   const sansTravaux = totD - travauxBudget;
   const cls = { louise: "who-l", quentin: "who-q", pret: "who-p" };
   const ecart = Math.round((totR - totD) * 100) / 100;
@@ -456,7 +456,7 @@ function renderMaison(m) {
           ${suivi.length ? `<table class="tx">
             <thead><tr><th></th><th class="r">Apport prévu</th><th class="r">Payé</th><th class="r">Écart</th></tr></thead>
             <tbody>${apports.map(a => { const p = paye[a.qui] || 0, e = p - a.montant; return `<tr><td><i class="dotw w-${a.qui}"></i>${esc(a.libelle.replace(/^Apport /, ""))}</td><td class="r">${fmt(a.montant)}</td><td class="r">${fmt(p)}</td><td class="r ${e > 0 ? "neg" : "pos"}">${e > 0 ? "+" : "−"}${fmt(Math.abs(e))}</td></tr>`; }).join("")}
-            ${paye.foxerie ? `<tr><td><i class="dotw w-foxerie"></i>Foxerie</td><td class="r muted">—</td><td class="r">${fmt(paye.foxerie)}</td><td></td></tr>` : ""}</tbody>
+            ${Object.keys(paye).filter(k => k.startsWith("foxerie")).map(k => `<tr><td><i class="dotw w-${k}"></i>${esc(QUI_LAB[k] || k)}</td><td class="r muted">—</td><td class="r">${fmt(paye[k])}</td><td></td></tr>`).join("")}</tbody>
           </table>
           <p class="note">Payé : total des lignes du suivi des dépenses (achat, travaux, EC Rénov). Un écart positif veut dire que la personne a déjà mis plus que son apport.</p>`
           : `<div class="legend">${apports.map(a => `<span><i class="${cls[a.qui]}"></i>${esc(a.libelle.replace(/^Apport /, ""))} <b class="num">${fmt(a.montant)}</b> · ${pct.format(a.montant / apport)}</span>`).join("")}</div>`}
