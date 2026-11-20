@@ -567,7 +567,7 @@
    "paiement": "CB",
    "qui": "louise",
    "montant": 481.0,
-   "fait": false
+   "fait": true
   },
   {
    "date": "2026-11-19",
